@@ -1,0 +1,18 @@
+[
+  {
+    "filename": "icqtbbbxq_ima.fits",
+    "bytes": 168261120,
+    "sha256": "7b8ff356c5c00a35e2576f2c81dc14ebb1c735f0cee343918b8bbf4f26494a0c",
+    "role": "contaminated calibrated nondestructive reads",
+    "data_uri": "mast:HST/product/icqtbbbxq_ima.fits",
+    "download_url": "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:HST/product/icqtbbbxq_ima.fits"
+  },
+  {
+    "filename": "icqtbbc0q_ima.fits",
+    "bytes": 168261120,
+    "sha256": "4d9db90cdb11f2c7934c412c02102528d9d184711081e706733d3b37280fd9b5",
+    "role": "nominal comparison calibrated nondestructive reads",
+    "data_uri": "mast:HST/product/icqtbbc0q_ima.fits",
+    "download_url": "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:HST/product/icqtbbc0q_ima.fits"
+  }
+]
