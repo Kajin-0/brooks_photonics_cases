@@ -2,56 +2,97 @@
 
 ## Engineering question
 
-Can read-level detector diagnostics identify which intervals of a nondestructive HgCdTe ramp are contaminated, quantify the spatial signature, and show why a single fitted count-rate image is insufficient?
+Can read-level detector diagnostics determine which intervals of a nondestructive HgCdTe ramp are contaminated, separate spatial and common-mode effects, quantify uncertainty, and show how read selection changes the reconstructed count-rate product?
 
-## Real data
+## Real public data
 
-This case uses two public WFC3/IR exposures from HST program 14037, visit BB:
+This case uses four public Hubble WFC3/IR products from program 14037, visit BB:
 
-- `icqtbbbxq_ima.fits`: strong time-variable Earth-limb scattered-light contamination;
-- `icqtbbc0q_ima.fits`: nominal comparison exposure from the same visit.
+- `icqtbbbxq_ima.fits` — exposure with strong time-variable Earth-limb scattered light;
+- `icqtbbc0q_ima.fits` — nominal comparison exposure from the same visit;
+- `icqtbbbxq_flt.fits` — archived fitted count-rate product for the affected ramp;
+- `icqtbbc0q_flt.fits` — archived fitted count-rate product for the nominal ramp.
 
-The pair is used by the official STScI WFC3/IR IMA visualization tutorial. Exact MAST product URIs, local byte counts, and SHA-256 hashes are recorded in `data/manifest.csv` and `data/raw/inventory.json`.
+The exposure pair is used by the official STScI WFC3/IR IMA visualization tutorial. Exact MAST product URIs, byte counts, and SHA-256 hashes are recorded in `data/manifest.csv` and `data/raw/inventory.json`.
 
-## Measured results
+## Final measured results
 
-Both products contain 16 calibrated reads, producing 14 positive-time read intervals after chronological sorting.
+Each IMA product contains 16 calibrated reads, yielding 14 consecutive positive-time intervals.
 
-| Metric | Contaminated exposure | Nominal control |
+| Metric | Result |
+|---|---:|
+| Spatially anomalous intervals | 0–3 |
+| Common-mode intervals at 0.05 e-/s/pixel | 0–6 |
+| Common-mode duration | 700.002 s |
+| Peak contaminated left-right asymmetry | 53.85% |
+| Peak nominal-control asymmetry | 1.83% |
+| Peak full-frame transient excess | 0.4958 e-/s/pixel |
+| Full-frame integrated positive excess | 197.26 e-/pixel |
+| Full-frame excess / nominal integrated charge | 16.10% |
+| Late-time static offset removed | 0.02096 e-/s/pixel |
+
+The spatial block-bootstrap analysis used 779 independent `32 x 32` pixel tiles and 2,000 resamples:
+
+| Robustness metric | Result |
+|---|---:|
+| High-confidence common-mode intervals | 0–6 |
+| Tile-median integrated excess estimate | 150.03 e-/pixel |
+| 95% interval on integrated excess | 144.61–159.50 e-/pixel |
+| 95% interval on flagged duration | 700.002–700.002 s |
+| 95% interval on peak excess | 0.3089–0.3680 e-/s/pixel |
+
+The difference between the `197.26 e-/pixel` full-frame estimator and the `150.03 e-/pixel` spatial tile-median estimator is intentional. The first describes the median detector-wide excess after pixel-level masking; the second reduces the leverage of strongly illuminated spatial regions and is used as the robust uncertainty estimate.
+
+## Principal finding
+
+The first four intervals contain a pronounced spatial gradient, while a lower-amplitude common-mode excess remains measurable through interval 6. A spatial-uniformity test alone would therefore terminate the anomaly two intervals too early.
+
+The evidence is most consistent with a time-variable external background rather than stable gain nonuniformity, intrinsic dark-current nonuniformity, or an isolated cosmic-ray event.
+
+## Source-free validation
+
+A source mask was constructed from late nominal-control interval maps. It retained `94.25%` of the interior pixels.
+
+- common-mode classification agreement: `100%`;
+- source-free integrated excess: `196.60 e-/pixel`;
+- maximum change caused by source masking: `0.00313 e-/s/pixel`;
+- median change caused by source masking: `7.37e-5 e-/s/pixel`.
+
+The transient result is therefore not driven by bright astrophysical sources in the field.
+
+## Independent FLT reconstruction
+
+A free-intercept, data-quality-aware ordinary-least-squares slope was fit to cumulative charge. The post-transient fit begins at `702.934 s`, after interval 6.
+
+| Product or fit | Source-free median rate | Left-right asymmetry |
 |---|---:|---:|
-| Reads | 16 | 16 |
-| Read intervals analyzed | 14 | 14 |
-| Spatially flagged intervals | 3 | 0 |
-| Maximum absolute left-right asymmetry | 19.04% | 1.83% |
-| Median interval rate | 0.9435 e-/s/pixel | 0.8687 e-/s/pixel |
+| Archived CALWF3 FLT | 1.00296 e-/s/pixel | 6.32% |
+| Independent all-read fit | 0.99992 e-/s/pixel | 9.55% |
+| Independent post-transient fit | 0.89337 e-/s/pixel | 0.40% |
 
-The control-relative analysis produced the following additional findings:
+The post-transient fit is `0.11108 e-/s/pixel` below the archived FLT in median residual, with a residual NMAD of `0.05243 e-/s/pixel`. This shows that the final fitted image retains measurable influence from the time-variable ramp history.
 
-- intervals 0–2 show a strong spatial signature;
-- intervals 0–6 exceed the provisional common-mode threshold of `0.05 e-/s/pixel`;
-- the common-mode excess persists for approximately `700.0 s`;
-- peak transient excess is `0.3264 e-/s/pixel`;
-- integrated positive transient excess is `146.25 e-/pixel`;
-- this excess equals `11.93%` of the nominal control's integrated charge over the analyzed intervals;
-- the late-time exposure-to-exposure offset is `0.01919 e-/s/pixel` and is removed before transient classification.
+## Data-quality policy
 
-![Measured interval rate comparison](figures/control_comparison.svg)
+Permanent detector and calibration defects are rejected. The WFC3 `DATAREJECT=8192` bit is not treated as a permanent detector defect because it is generated by the up-the-ramp fitting process and is itself diagnostically relevant to this case.
 
-![Control-relative transient excess](figures/transient_excess.svg)
+Under this policy:
 
-![Spatial asymmetry comparison](figures/spatial_asymmetry_comparison.svg)
+- peak interval-level DATAREJECT fraction in the affected exposure: `34.85%`;
+- peak interval-level DATAREJECT fraction in the control: `1.07%`;
+- fraction of affected-array pixels carrying DATAREJECT in at least one read: `35.80%`.
 
-The important distinction is that the obvious left-right distortion is concentrated in the first three intervals, while a lower-amplitude common-mode excess remains detectable through interval 6. A spatial-symmetry test alone would therefore understate the duration of the transient background.
+This DQ-aware policy explains why the final spatial asymmetry and excess estimates are larger than the initial provisional analysis, which excluded all nonzero DQ values and therefore removed much of the anomaly from the measurement.
 
-## Detector-level method
+## Method
 
-For each calibrated read, cumulative charge is reconstructed as
+For calibrated count-rate read `R_i(x,y)` at sample time `t_i`, cumulative charge is reconstructed as
 
 \[
 Q_i(x,y)=R_i(x,y)t_i,
 \]
 
-and the interval rate is
+and the consecutive-read interval rate is
 
 \[
 \dot Q_i(x,y)=\frac{Q_i(x,y)-Q_{i-1}(x,y)}{t_i-t_{i-1}}.
@@ -60,12 +101,15 @@ and the interval rate is
 The workflow then:
 
 1. sorts IMA extensions into chronological order;
-2. removes edge regions and pixels carrying nonzero data-quality flags;
+2. rejects permanent detector-quality bits while retaining pipeline-generated DATAREJECT as a diagnostic;
 3. computes sigma-clipped full-frame, left-half, and right-half interval medians;
-4. quantifies normalized left-right asymmetry;
-5. flags spatial anomalies using a fixed asymmetry criterion and robust z-scores;
-6. subtracts the nominal-control interval rate and a late-time static offset;
-7. classifies the remaining transient excess using an explicit engineering threshold.
+4. separates spatial asymmetry from matched-control common-mode excess;
+5. sweeps thresholds from `0.02` to `0.10 e-/s/pixel` and late-baseline windows from 3 to 6 intervals;
+6. removes bright sources using a late-control source mask;
+7. performs a 2,000-replicate spatial block bootstrap;
+8. reconstructs all-read and post-transient ramp slopes;
+9. compares both independent fits with the archived FLT product;
+10. generates the portfolio PDF and all committed tables and figures.
 
 ## Reproduce
 
@@ -77,26 +121,30 @@ source .venv/bin/activate
 # .venv\Scripts\Activate.ps1
 
 python -m pip install -e ".[dev]"
-python scripts/download_case_001.py
-python scripts/run_case_001.py
+make download
+make analyze
 ```
 
-The two raw IMA files total `336,522,240 bytes` and are intentionally excluded from Git. The downloader verifies that each product is FITS data and writes the reproducibility inventory.
+The source FITS files are intentionally excluded from Git. The downloader validates each file and writes a reproducibility inventory with byte size and SHA-256 digest.
 
-## Committed outputs
+## Main outputs
 
 ```text
 data/raw/inventory.json
-data/derived/scattered_interval_summary.csv
-data/derived/nominal_interval_summary.csv
-data/derived/exposure_comparison.csv
 data/derived/case_summary.json
-figures/control_comparison.svg
-figures/transient_excess.svg
-figures/spatial_asymmetry_comparison.svg
-report/draft_findings.md
+data/derived/exposure_comparison.csv
+data/derived/threshold_sensitivity.csv
+data/derived/bootstrap_interval_uncertainty.csv
+data/derived/bootstrap_metrics.json
+data/derived/source_mask_metrics.json
+data/derived/flt_reconstruction_metrics.json
+figures/representative_interval_maps.png
+figures/threshold_sensitivity.png
+figures/bootstrap_uncertainty.png
+figures/flt_reconstruction.png
+report/Brooks_Photonics_Case_001.pdf
 ```
 
 ## Interpretation boundary
 
-This case diagnoses contamination in measured detector ramps. It does not establish a defect in the underlying HgCdTe material. The `0.05 e-/s/pixel` common-mode threshold is a transparent provisional engineering criterion, not an official WFC3 pipeline threshold. A production conclusion should include threshold sensitivity, source-background modeling, and comparison with reprocessed FLT products after read rejection.
+This case diagnoses a measurement-condition artifact in real HgCdTe detector ramps. It does not infer HgCdTe composition, carrier lifetime, dark-current mechanism, detectivity, or intrinsic material quality. The `0.05 e-/s/pixel` common-mode threshold is a transparent engineering criterion used for this demonstration, not an official WFC3 pipeline threshold.
