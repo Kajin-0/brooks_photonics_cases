@@ -48,9 +48,11 @@ jobs:
       - name: Verify required products
         run: |
           test -s cases/001_wfc3_ir_ramp_anomaly/report/Brooks_Photonics_Case_001.pdf
+          test -s cases/001_wfc3_ir_ramp_anomaly/report/Brooks_Photonics_Case_001_Technical.pdf
           test -s cases/001_wfc3_ir_ramp_anomaly/data/derived/bootstrap_metrics.json
           test -s cases/001_wfc3_ir_ramp_anomaly/data/derived/flt_reconstruction_metrics.json
           test -s cases/001_wfc3_ir_ramp_anomaly/figures/representative_interval_maps.png
+          test -s cases/001_wfc3_ir_ramp_anomaly/figures/robustness_summary.png
       - name: Upload complete case products
         uses: actions/upload-artifact@v4
         with:
@@ -61,7 +63,7 @@ jobs:
             cases/001_wfc3_ir_ramp_anomaly/data/raw/inventory.json
             cases/001_wfc3_ir_ramp_anomaly/data/derived/*
             cases/001_wfc3_ir_ramp_anomaly/figures/*
-            cases/001_wfc3_ir_ramp_anomaly/report/Brooks_Photonics_Case_001.pdf
+            cases/001_wfc3_ir_ramp_anomaly/report/*.pdf
       - name: Commit generated portfolio products
         if: github.event_name == 'push' && github.actor != 'github-actions[bot]'
         run: |
@@ -71,7 +73,7 @@ jobs:
             cases/001_wfc3_ir_ramp_anomaly/data/raw/inventory.json \
             cases/001_wfc3_ir_ramp_anomaly/data/derived \
             cases/001_wfc3_ir_ramp_anomaly/figures \
-            cases/001_wfc3_ir_ramp_anomaly/report/Brooks_Photonics_Case_001.pdf
+            cases/001_wfc3_ir_ramp_anomaly/report/*.pdf
           if git diff --cached --quiet; then
             echo "Generated products are unchanged."
           else
