@@ -6,7 +6,13 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from brooks_cases.plotting import plot_asymmetry, plot_interval_summary
+from brooks_cases.comparison import compare_interval_summaries, comparison_metrics
+from brooks_cases.plotting import (
+    plot_asymmetry,
+    plot_control_comparison,
+    plot_interval_summary,
+    plot_transient_excess,
+)
 from brooks_cases.wfc3 import load_ima, summarize_intervals
 
 CASE_DIR = Path("cases/001_wfc3_ir_ramp_anomaly")
@@ -23,6 +29,7 @@ def main() -> None:
     DERIVED_DIR.mkdir(parents=True, exist_ok=True)
     FIGURE_DIR.mkdir(parents=True, exist_ok=True)
     case_summary: dict[str, object] = {}
+    interval_summaries = {}
 
     for label, filename in EXPOSURES.items():
         path = RAW_DIR / filename
@@ -31,6 +38,9 @@ def main() -> None:
 
         cube = load_ima(path)
         summary = summarize_intervals(cube)
+        positive_times = cube.time_s[cube.time_s > 0]
+        summary["interval_duration_s"] = positive_times[1:] - positive_times[:-1]
+        interval_summaries[label] = summary
         summary.to_csv(DERIVED_DIR / f"{label}_interval_summary.csv", index=False)
         plot_interval_summary(
             summary,
@@ -54,6 +64,15 @@ def main() -> None:
             "maximum_absolute_asymmetry": float(summary["left_right_asymmetry"].abs().max()),
             "median_interval_rate_e_s": float(summary["full_median_e_s"].median()),
         }
+
+    comparison = compare_interval_summaries(
+        interval_summaries["scattered"],
+        interval_summaries["nominal"],
+    )
+    comparison.to_csv(DERIVED_DIR / "exposure_comparison.csv", index=False)
+    case_summary["comparison"] = comparison_metrics(comparison)
+    plot_control_comparison(comparison, FIGURE_DIR / "control_comparison.png")
+    plot_transient_excess(comparison, FIGURE_DIR / "transient_excess.png")
 
     (DERIVED_DIR / "case_summary.json").write_text(
         json.dumps(case_summary, indent=2) + "\n", encoding="utf-8"
