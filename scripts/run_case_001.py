@@ -43,11 +43,14 @@ def main() -> None:
             f"WFC3/IR {label} exposure: spatial asymmetry",
         )
 
+        flagged_intervals = (
+            summary.loc[summary["anomaly"], "interval_index"].astype(int).tolist()
+        )
         case_summary[label] = {
             "filename": filename,
             "n_reads": int(cube.time_s.size),
             "n_intervals": int(summary.shape[0]),
-            "flagged_intervals": summary.loc[summary["anomaly"], "interval_index"].astype(int).tolist(),
+            "flagged_intervals": flagged_intervals,
             "maximum_absolute_asymmetry": float(summary["left_right_asymmetry"].abs().max()),
             "median_interval_rate_e_s": float(summary["full_median_e_s"].median()),
         }
