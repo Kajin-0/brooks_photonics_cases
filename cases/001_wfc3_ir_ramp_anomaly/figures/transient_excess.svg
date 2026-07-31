@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+<rect width="1200" height="700" fill="#050505"/>
+<text x="600" y="48" fill="#F8FAFC" font-family="Arial" font-size="32" text-anchor="middle" font-weight="700">Time-variable excess relative to nominal control</text>
+<line x1="135.0" y1="100" x2="135.0" y2="580" stroke="#2A2A2A" stroke-width="1"/>
+<text x="135.0" y="616" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="middle">0</text>
+<line x1="275.0" y1="100" x2="275.0" y2="580" stroke="#2A2A2A" stroke-width="1"/>
+<text x="275.0" y="616" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="middle">200</text>
+<line x1="415.0" y1="100" x2="415.0" y2="580" stroke="#2A2A2A" stroke-width="1"/>
+<text x="415.0" y="616" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="middle">400</text>
+<line x1="555.0" y1="100" x2="555.0" y2="580" stroke="#2A2A2A" stroke-width="1"/>
+<text x="555.0" y="616" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="middle">600</text>
+<line x1="695.0" y1="100" x2="695.0" y2="580" stroke="#2A2A2A" stroke-width="1"/>
+<text x="695.0" y="616" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="middle">800</text>
+<line x1="835.0" y1="100" x2="835.0" y2="580" stroke="#2A2A2A" stroke-width="1"/>
+<text x="835.0" y="616" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="middle">1000</text>
+<line x1="975.0" y1="100" x2="975.0" y2="580" stroke="#2A2A2A" stroke-width="1"/>
+<text x="975.0" y="616" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="middle">1200</text>
+<line x1="1115.0" y1="100" x2="1115.0" y2="580" stroke="#2A2A2A" stroke-width="1"/>
+<text x="1115.0" y="616" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="middle">1400</text>
+<line x1="135" y1="580.0" x2="1115" y2="580.0" stroke="#2A2A2A" stroke-width="1"/>
+<text x="117" y="587.0" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="end">-0.02</text>
+<line x1="135" y1="484.0" x2="1115" y2="484.0" stroke="#2A2A2A" stroke-width="1"/>
+<text x="117" y="491.0" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="end">0.05</text>
+<line x1="135" y1="388.0" x2="1115" y2="388.0" stroke="#2A2A2A" stroke-width="1"/>
+<text x="117" y="395.0" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="end">0.13</text>
+<line x1="135" y1="292.0" x2="1115" y2="292.0" stroke="#2A2A2A" stroke-width="1"/>
+<text x="117" y="299.0" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="end">0.20</text>
+<line x1="135" y1="196.0" x2="1115" y2="196.0" stroke="#2A2A2A" stroke-width="1"/>
+<text x="117" y="203.0" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="end">0.28</text>
+<line x1="135" y1="100.0" x2="1115" y2="100.0" stroke="#2A2A2A" stroke-width="1"/>
+<text x="117" y="107.0" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="end">0.35</text>
+<line x1="135" y1="100" x2="135" y2="580" stroke="#F8FAFC" stroke-width="2"/>
+<line x1="135" y1="580" x2="1115" y2="580" stroke="#F8FAFC" stroke-width="2"/>
+<text x="625.0" y="668" fill="#F8FAFC" font-family="Arial" font-size="24" text-anchor="middle">Interval midpoint (s)</text>
+<text x="32" y="340.0" fill="#F8FAFC" font-family="Arial" font-size="22" text-anchor="middle" transform="rotate(-90 32 340.0)">Transient excess rate (e-/s/pixel)</text>
+<polyline points="172.1,130.6 242.1,140.2 312.1,210.9 382.1,332.8 452.1,418.7 522.1,437.0 592.1,450.7 662.1,496.0 732.1,512.0 802.1,537.0 872.1,542.2 942.1,543.3 1012.1,566.5 1082.1,564.8" fill="none" stroke="#A855F7" stroke-width="4" stroke-linejoin="round"/>
+<circle cx="172.1" cy="130.6" r="6" fill="#A855F7"/>
+<circle cx="242.1" cy="140.2" r="6" fill="#A855F7"/>
+<circle cx="312.1" cy="210.9" r="6" fill="#A855F7"/>
+<circle cx="382.1" cy="332.8" r="6" fill="#A855F7"/>
+<circle cx="452.1" cy="418.7" r="6" fill="#A855F7"/>
+<circle cx="522.1" cy="437.0" r="6" fill="#A855F7"/>
+<circle cx="592.1" cy="450.7" r="6" fill="#A855F7"/>
+<circle cx="662.1" cy="496.0" r="6" fill="#A855F7"/>
+<circle cx="732.1" cy="512.0" r="6" fill="#A855F7"/>
+<circle cx="802.1" cy="537.0" r="6" fill="#A855F7"/>
+<circle cx="872.1" cy="542.2" r="6" fill="#A855F7"/>
+<circle cx="942.1" cy="543.3" r="6" fill="#A855F7"/>
+<circle cx="1012.1" cy="566.5" r="6" fill="#A855F7"/>
+<circle cx="1082.1" cy="564.8" r="6" fill="#A855F7"/>
+<line x1="790" y1="78" x2="830" y2="78" stroke="#A855F7" stroke-width="4"/>
+<text x="840" y="85" fill="#F8FAFC" font-family="Arial" font-size="20">Transient excess</text>
+<line x1="135" y1="489.2" x2="1115" y2="489.2" stroke="#F59E0B" stroke-width="3" stroke-dasharray="10 8"/>
+<text x="1107" y="479.2" fill="#F59E0B" font-family="Arial" font-size="19" text-anchor="end">0.05 e-/s/pixel threshold</text>
+<path d="M 164.1 122.6 L 180.1 138.6 M 180.1 122.6 L 164.1 138.6" stroke="#F59E0B" stroke-width="4"/>
+<path d="M 234.1 132.2 L 250.1 148.2 M 250.1 132.2 L 234.1 148.2" stroke="#F59E0B" stroke-width="4"/>
+<path d="M 304.1 202.9 L 320.1 218.9 M 320.1 202.9 L 304.1 218.9" stroke="#F59E0B" stroke-width="4"/>
+<path d="M 374.1 324.8 L 390.1 340.8 M 390.1 324.8 L 374.1 340.8" stroke="#F59E0B" stroke-width="4"/>
+<path d="M 444.1 410.7 L 460.1 426.7 M 460.1 410.7 L 444.1 426.7" stroke="#F59E0B" stroke-width="4"/>
+<path d="M 514.1 429.0 L 530.1 445.0 M 530.1 429.0 L 514.1 445.0" stroke="#F59E0B" stroke-width="4"/>
+<path d="M 584.1 442.7 L 600.1 458.7 M 600.1 442.7 L 584.1 458.7" stroke="#F59E0B" stroke-width="4"/>
+</svg>
