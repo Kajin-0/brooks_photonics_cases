@@ -26,6 +26,11 @@ from brooks_cases.plotting import (
     plot_threshold_sensitivity,
     plot_transient_excess,
 )
+from brooks_cases.report_charts import (
+    plot_robustness_summary,
+    plot_spatial_and_dq,
+    plot_temporal_diagnosis,
+)
 from brooks_cases.reporting import build_case_001_report
 from brooks_cases.wfc3 import load_flt, load_ima, summarize_intervals
 
@@ -67,14 +72,26 @@ def main() -> None:
         summary = summarize_intervals(cube)
         summaries[label] = summary
         summary.to_csv(DERIVED_DIR / f"{label}_interval_summary.csv", index=False)
-        plot_interval_summary(summary, FIGURE_DIR / f"{label}_interval_rates.png", f"WFC3/IR {label} exposure: interval rates")
-        plot_asymmetry(summary, FIGURE_DIR / f"{label}_left_right_asymmetry.png", f"WFC3/IR {label} exposure: spatial asymmetry")
+        plot_interval_summary(
+            summary,
+            FIGURE_DIR / f"{label}_interval_rates.png",
+            f"WFC3/IR {label} exposure: interval rates",
+        )
+        plot_asymmetry(
+            summary,
+            FIGURE_DIR / f"{label}_left_right_asymmetry.png",
+            f"WFC3/IR {label} exposure: spatial asymmetry",
+        )
         case_summary[label] = {
             "filename": filename,
             "n_reads": int(cube.time_s.size),
             "n_intervals": int(summary.shape[0]),
-            "flagged_intervals": summary.loc[summary["anomaly"], "interval_index"].astype(int).tolist(),
-            "maximum_absolute_asymmetry": float(summary["left_right_asymmetry"].abs().max()),
+            "flagged_intervals": summary.loc[
+                summary["anomaly"], "interval_index"
+            ].astype(int).tolist(),
+            "maximum_absolute_asymmetry": float(
+                summary["left_right_asymmetry"].abs().max()
+            ),
             "median_interval_rate_e_s": float(summary["full_median_e_s"].median()),
             "peak_datareject_fraction": float(summary["datareject_fraction"].max()),
         }
@@ -85,10 +102,14 @@ def main() -> None:
         for label, cube in cubes.items()
     }
     for label, summary in source_free_summaries.items():
-        summary.to_csv(DERIVED_DIR / f"{label}_source_free_interval_summary.csv", index=False)
+        summary.to_csv(
+            DERIVED_DIR / f"{label}_source_free_interval_summary.csv",
+            index=False,
+        )
 
     comparison = compare_interval_summaries(
-        summaries["scattered"], summaries["nominal"],
+        summaries["scattered"],
+        summaries["nominal"],
         late_intervals=LATE_INTERVALS,
         excess_threshold_e_s=THRESHOLD_E_S,
     )
@@ -103,11 +124,13 @@ def main() -> None:
     comparison_summary = comparison_metrics(comparison)
     case_summary["comparison"] = comparison_summary
 
-    source_metrics.update({
-        "retained_fraction": source_result.retained_fraction,
-        "background_median_e_s": source_result.background_median_e_s,
-        "background_scale_e_s": source_result.background_scale_e_s,
-    })
+    source_metrics.update(
+        {
+            "retained_fraction": source_result.retained_fraction,
+            "background_median_e_s": source_result.background_median_e_s,
+            "background_scale_e_s": source_result.background_scale_e_s,
+        }
+    )
     _write_json(DERIVED_DIR / "source_mask_metrics.json", source_metrics)
 
     sensitivity = threshold_sensitivity(summaries["scattered"], summaries["nominal"])
@@ -115,11 +138,17 @@ def main() -> None:
 
     durations = summaries["scattered"]["interval_duration_s"].to_numpy(dtype=float)
     bootstrap = bootstrap_control_comparison(
-        cubes["scattered"], cubes["nominal"], source_result.analysis_mask, durations,
+        cubes["scattered"],
+        cubes["nominal"],
+        source_result.analysis_mask,
+        durations,
         late_intervals=LATE_INTERVALS,
         threshold_e_s=THRESHOLD_E_S,
     )
-    bootstrap.interval_table.to_csv(DERIVED_DIR / "bootstrap_interval_uncertainty.csv", index=False)
+    bootstrap.interval_table.to_csv(
+        DERIVED_DIR / "bootstrap_interval_uncertainty.csv",
+        index=False,
+    )
     _write_json(DERIVED_DIR / "bootstrap_metrics.json", bootstrap.metrics)
 
     scattered_flt_path = RAW_DIR / FLT_FILES["scattered"]
@@ -127,21 +156,56 @@ def main() -> None:
         raise FileNotFoundError(f"Missing required FLT product: {scattered_flt_path}")
     flt = load_flt(scattered_flt_path)
     common_mode_intervals = comparison_summary["common_mode_flagged_intervals"]
-    clean_start_positive_read = max(common_mode_intervals) + 1 if common_mode_intervals else 0
+    clean_start_positive_read = (
+        max(common_mode_intervals) + 1 if common_mode_intervals else 0
+    )
     flt_metrics, flt_maps = flt_reconstruction_metrics(
-        cubes["scattered"], flt, source_result.analysis_mask,
+        cubes["scattered"],
+        flt,
+        source_result.analysis_mask,
         clean_start_positive_read=clean_start_positive_read,
     )
     _write_json(DERIVED_DIR / "flt_reconstruction_metrics.json", flt_metrics)
 
     plot_control_comparison(comparison, FIGURE_DIR / "control_comparison.png")
-    plot_transient_excess(comparison, FIGURE_DIR / "transient_excess.png", threshold_e_s=THRESHOLD_E_S)
+    plot_transient_excess(
+        comparison,
+        FIGURE_DIR / "transient_excess.png",
+        threshold_e_s=THRESHOLD_E_S,
+    )
     plot_source_free_validation(comparison, FIGURE_DIR / "source_free_validation.png")
     plot_threshold_sensitivity(sensitivity, FIGURE_DIR / "threshold_sensitivity.png")
-    plot_bootstrap_uncertainty(comparison, bootstrap.interval_table, FIGURE_DIR / "bootstrap_uncertainty.png", threshold_e_s=THRESHOLD_E_S)
-    plot_datareject_fraction(summaries["scattered"], summaries["nominal"], FIGURE_DIR / "datareject_fraction.png")
-    plot_representative_interval_maps(cubes["scattered"], cubes["nominal"], FIGURE_DIR / "representative_interval_maps.png")
+    plot_bootstrap_uncertainty(
+        comparison,
+        bootstrap.interval_table,
+        FIGURE_DIR / "bootstrap_uncertainty.png",
+        threshold_e_s=THRESHOLD_E_S,
+    )
+    plot_datareject_fraction(
+        summaries["scattered"],
+        summaries["nominal"],
+        FIGURE_DIR / "datareject_fraction.png",
+    )
+    plot_representative_interval_maps(
+        cubes["scattered"],
+        cubes["nominal"],
+        FIGURE_DIR / "representative_interval_maps.png",
+    )
     plot_flt_reconstruction(flt_maps, FIGURE_DIR / "flt_reconstruction.png")
+
+    # Insight-led figures used by the public-facing report.
+    plot_spatial_and_dq(
+        summaries["scattered"],
+        summaries["nominal"],
+        FIGURE_DIR / "spatial_and_dq.png",
+    )
+    plot_temporal_diagnosis(comparison, FIGURE_DIR / "temporal_diagnosis.png")
+    plot_robustness_summary(
+        sensitivity,
+        comparison,
+        bootstrap.interval_table,
+        FIGURE_DIR / "robustness_summary.png",
+    )
 
     case_summary["source_free"] = source_metrics
     case_summary["bootstrap"] = bootstrap.metrics
