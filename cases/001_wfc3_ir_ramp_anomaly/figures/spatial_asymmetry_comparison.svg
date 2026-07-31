@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+<rect width="1200" height="700" fill="#050505"/>
+<text x="600" y="48" fill="#F8FAFC" font-family="Arial" font-size="32" text-anchor="middle" font-weight="700">Spatial asymmetry: contaminated vs nominal</text>
+<line x1="135.0" y1="100" x2="135.0" y2="580" stroke="#2A2A2A" stroke-width="1"/>
+<text x="135.0" y="616" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="middle">0</text>
+<line x1="275.0" y1="100" x2="275.0" y2="580" stroke="#2A2A2A" stroke-width="1"/>
+<text x="275.0" y="616" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="middle">200</text>
+<line x1="415.0" y1="100" x2="415.0" y2="580" stroke="#2A2A2A" stroke-width="1"/>
+<text x="415.0" y="616" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="middle">400</text>
+<line x1="555.0" y1="100" x2="555.0" y2="580" stroke="#2A2A2A" stroke-width="1"/>
+<text x="555.0" y="616" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="middle">600</text>
+<line x1="695.0" y1="100" x2="695.0" y2="580" stroke="#2A2A2A" stroke-width="1"/>
+<text x="695.0" y="616" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="middle">800</text>
+<line x1="835.0" y1="100" x2="835.0" y2="580" stroke="#2A2A2A" stroke-width="1"/>
+<text x="835.0" y="616" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="middle">1000</text>
+<line x1="975.0" y1="100" x2="975.0" y2="580" stroke="#2A2A2A" stroke-width="1"/>
+<text x="975.0" y="616" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="middle">1200</text>
+<line x1="1115.0" y1="100" x2="1115.0" y2="580" stroke="#2A2A2A" stroke-width="1"/>
+<text x="1115.0" y="616" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="middle">1400</text>
+<line x1="135" y1="580.0" x2="1115" y2="580.0" stroke="#2A2A2A" stroke-width="1"/>
+<text x="117" y="587.0" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="end">-0.02</text>
+<line x1="135" y1="484.0" x2="1115" y2="484.0" stroke="#2A2A2A" stroke-width="1"/>
+<text x="117" y="491.0" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="end">0.02</text>
+<line x1="135" y1="388.0" x2="1115" y2="388.0" stroke="#2A2A2A" stroke-width="1"/>
+<text x="117" y="395.0" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="end">0.07</text>
+<line x1="135" y1="292.0" x2="1115" y2="292.0" stroke="#2A2A2A" stroke-width="1"/>
+<text x="117" y="299.0" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="end">0.11</text>
+<line x1="135" y1="196.0" x2="1115" y2="196.0" stroke="#2A2A2A" stroke-width="1"/>
+<text x="117" y="203.0" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="end">0.16</text>
+<line x1="135" y1="100.0" x2="1115" y2="100.0" stroke="#2A2A2A" stroke-width="1"/>
+<text x="117" y="107.0" fill="#94A3B8" font-family="Arial" font-size="20" text-anchor="end">0.20</text>
+<line x1="135" y1="100" x2="135" y2="580" stroke="#F8FAFC" stroke-width="2"/>
+<line x1="135" y1="580" x2="1115" y2="580" stroke="#F8FAFC" stroke-width="2"/>
+<text x="625.0" y="668" fill="#F8FAFC" font-family="Arial" font-size="24" text-anchor="middle">Interval midpoint (s)</text>
+<text x="32" y="340.0" fill="#F8FAFC" font-family="Arial" font-size="22" text-anchor="middle" transform="rotate(-90 32 340.0)">Normalized left-right asymmetry</text>
+<polyline points="172.1,120.9 242.1,188.8 312.1,363.9 382.1,452.5 452.1,477.3 522.1,511.9 592.1,533.2 662.1,515.5 732.1,525.6 802.1,519.3 872.1,515.4 942.1,517.4 1012.1,532.4 1082.1,498.7" fill="none" stroke="#A855F7" stroke-width="4" stroke-linejoin="round"/>
+<circle cx="172.1" cy="120.9" r="6" fill="#A855F7"/>
+<circle cx="242.1" cy="188.8" r="6" fill="#A855F7"/>
+<circle cx="312.1" cy="363.9" r="6" fill="#A855F7"/>
+<circle cx="382.1" cy="452.5" r="6" fill="#A855F7"/>
+<circle cx="452.1" cy="477.3" r="6" fill="#A855F7"/>
+<circle cx="522.1" cy="511.9" r="6" fill="#A855F7"/>
+<circle cx="592.1" cy="533.2" r="6" fill="#A855F7"/>
+<circle cx="662.1" cy="515.5" r="6" fill="#A855F7"/>
+<circle cx="732.1" cy="525.6" r="6" fill="#A855F7"/>
+<circle cx="802.1" cy="519.3" r="6" fill="#A855F7"/>
+<circle cx="872.1" cy="515.4" r="6" fill="#A855F7"/>
+<circle cx="942.1" cy="517.4" r="6" fill="#A855F7"/>
+<circle cx="1012.1" cy="532.4" r="6" fill="#A855F7"/>
+<circle cx="1082.1" cy="498.7" r="6" fill="#A855F7"/>
+<line x1="790" y1="78" x2="830" y2="78" stroke="#A855F7" stroke-width="4"/>
+<text x="840" y="85" fill="#F8FAFC" font-family="Arial" font-size="20">Contaminated</text>
+<polyline points="172.1,536.5 242.1,528.3 312.1,524.1 382.1,532.5 452.1,526.2 522.1,515.8 592.1,506.0 662.1,518.7 732.1,529.0 802.1,535.4 872.1,529.3 942.1,524.1 1012.1,496.4 1082.1,548.7" fill="none" stroke="#F8FAFC" stroke-width="4" stroke-linejoin="round"/>
+<circle cx="172.1" cy="536.5" r="6" fill="#F8FAFC"/>
+<circle cx="242.1" cy="528.3" r="6" fill="#F8FAFC"/>
+<circle cx="312.1" cy="524.1" r="6" fill="#F8FAFC"/>
+<circle cx="382.1" cy="532.5" r="6" fill="#F8FAFC"/>
+<circle cx="452.1" cy="526.2" r="6" fill="#F8FAFC"/>
+<circle cx="522.1" cy="515.8" r="6" fill="#F8FAFC"/>
+<circle cx="592.1" cy="506.0" r="6" fill="#F8FAFC"/>
+<circle cx="662.1" cy="518.7" r="6" fill="#F8FAFC"/>
+<circle cx="732.1" cy="529.0" r="6" fill="#F8FAFC"/>
+<circle cx="802.1" cy="535.4" r="6" fill="#F8FAFC"/>
+<circle cx="872.1" cy="529.3" r="6" fill="#F8FAFC"/>
+<circle cx="942.1" cy="524.1" r="6" fill="#F8FAFC"/>
+<circle cx="1012.1" cy="496.4" r="6" fill="#F8FAFC"/>
+<circle cx="1082.1" cy="548.7" r="6" fill="#F8FAFC"/>
+<line x1="790" y1="108" x2="830" y2="108" stroke="#F8FAFC" stroke-width="4"/>
+<text x="840" y="115" fill="#F8FAFC" font-family="Arial" font-size="20">Nominal control</text>
+</svg>
