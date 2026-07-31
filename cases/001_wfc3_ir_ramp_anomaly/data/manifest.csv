@@ -1,0 +1,5 @@
+case_id,observation_id,filename,product_type,role,required,data_uri,download_url
+001,icqtbbbxq,icqtbbbxq_ima.fits,IMA,contaminated calibrated nondestructive reads,true,mast:HST/product/icqtbbbxq_ima.fits,https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:HST/product/icqtbbbxq_ima.fits
+001,icqtbbc0q,icqtbbc0q_ima.fits,IMA,nominal comparison calibrated nondestructive reads,true,mast:HST/product/icqtbbc0q_ima.fits,https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:HST/product/icqtbbc0q_ima.fits
+001,icqtbbbxq,icqtbbbxq_flt.fits,FLT,pipeline ramp-fit comparison,false,mast:HST/product/icqtbbbxq_flt.fits,https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:HST/product/icqtbbbxq_flt.fits
+001,icqtbbc0q,icqtbbc0q_flt.fits,FLT,nominal pipeline ramp-fit comparison,false,mast:HST/product/icqtbbc0q_flt.fits,https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:HST/product/icqtbbc0q_flt.fits
