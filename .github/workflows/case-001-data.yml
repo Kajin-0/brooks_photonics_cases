@@ -5,14 +5,14 @@ on:
   push:
     paths:
       - ".github/workflows/case-001-data.yml"
-      - "cases/001_wfc3_ir_ramp_anomaly/**"
+      - "cases/001_wfc3_ir_ramp_anomaly/data/manifest.csv"
       - "scripts/download_case_001.py"
       - "scripts/run_case_001.py"
       - "src/brooks_cases/**"
   pull_request:
     paths:
       - ".github/workflows/case-001-data.yml"
-      - "cases/001_wfc3_ir_ramp_anomaly/**"
+      - "cases/001_wfc3_ir_ramp_anomaly/data/manifest.csv"
       - "scripts/download_case_001.py"
       - "scripts/run_case_001.py"
       - "src/brooks_cases/**"
@@ -43,3 +43,4 @@ jobs:
             cases/001_wfc3_ir_ramp_anomaly/data/derived/*.csv
             cases/001_wfc3_ir_ramp_anomaly/data/derived/*.json
             cases/001_wfc3_ir_ramp_anomaly/figures/*.png
+            cases/001_wfc3_ir_ramp_anomaly/figures/*.svg
