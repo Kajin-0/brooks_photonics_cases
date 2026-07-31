@@ -9,6 +9,13 @@ on:
       - "scripts/download_case_001.py"
       - "scripts/run_case_001.py"
       - "src/brooks_cases/**"
+  pull_request:
+    paths:
+      - ".github/workflows/case-001-data.yml"
+      - "cases/001_wfc3_ir_ramp_anomaly/**"
+      - "scripts/download_case_001.py"
+      - "scripts/run_case_001.py"
+      - "src/brooks_cases/**"
 
 jobs:
   execute:
