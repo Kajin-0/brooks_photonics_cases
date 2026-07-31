@@ -1,11 +1,6 @@
-# Public source data are downloaded reproducibly and are not committed.
+# Public source FITS products are downloaded reproducibly and are not committed.
 **/data/raw/*
-!**/data/raw/.gitkeep
-**/data/derived/*
-!**/data/derived/.gitkeep
-**/figures/*
-!**/figures/.gitkeep
-**/inventory.json
+!**/data/raw/inventory.json
 **/*.fits
 **/*.fits.gz
 
