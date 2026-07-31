@@ -135,6 +135,7 @@ def build_case_001_report(case_dir: Path, output_path: Path) -> None:
         Paragraph(f"Figure 4. Across thresholds 0.02-0.10 e-/s/pixel and late baselines of 3-6 intervals, the last flagged interval ranges from {endpoint_min} to {endpoint_max}.", styles["Caption"]),
         _image(figures / "bootstrap_uncertainty.png", 6.8 * inch),
         Paragraph("Figure 5. 95% spatial block-bootstrap intervals using 32 x 32 pixel tiles.", styles["Caption"]),
+        PageBreak(),
         _table([
             ("Source-free pixels retained", f"{100 * source['retained_fraction']:.2f}%"),
             ("Source-free classification agreement", f"{100 * source['source_free_flag_agreement_fraction']:.1f}%"),
@@ -142,7 +143,6 @@ def build_case_001_report(case_dir: Path, output_path: Path) -> None:
             ("Integrated excess, 95% interval", f"{bootstrap['integrated_excess_ci95_low_e_per_pixel']:.2f} to {bootstrap['integrated_excess_ci95_high_e_per_pixel']:.2f} e-/pixel"),
             ("Flagged duration, 95% interval", f"{bootstrap['flagged_duration_ci95_low_s']:.1f} to {bootstrap['flagged_duration_ci95_high_s']:.1f} s"),
         ]),
-        PageBreak(),
         Paragraph("4. Independent ramp reconstruction", styles["CaseSection"]),
         Paragraph("A free-intercept, DQ-aware ordinary-least-squares slope is fitted to cumulative charge. The post-transient fit begins after the final nominal common-mode interval, so accumulated early charge changes the intercept rather than forcing the later slope upward.", styles["CaseBody"]),
         _image(figures / "flt_reconstruction.png", 6.65 * inch),
@@ -154,7 +154,6 @@ def build_case_001_report(case_dir: Path, output_path: Path) -> None:
             ("Independent post-transient median", f"{flt['clean_read_fit_source_free_median_e_s']:.5f} e-/s/pixel"),
             ("Post-transient vs FLT residual NMAD", f"{flt['clean_read_vs_flt']['residual_nmad_e_s']:.5f} e-/s/pixel"),
         ]),
-        PageBreak(),
         Paragraph("5. Engineering conclusion", styles["CaseSection"]),
         Paragraph("The anomaly is most consistent with a time-variable external background: it decays smoothly, begins with a spatial gradient, develops a common-mode tail, is absent from the matched control, and changes the slope inferred from the nondestructive ramp.", styles["Callout"]),
         _table([
