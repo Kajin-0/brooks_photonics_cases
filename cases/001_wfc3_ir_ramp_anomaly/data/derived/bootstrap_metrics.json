@@ -1,0 +1,24 @@
+{
+  "n_spatial_tiles": 779,
+  "n_bootstrap": 2000,
+  "tile_size_pixels": 32,
+  "late_time_offset_point_e_s": 0.02219343266304724,
+  "late_time_offset_ci95_low_e_s": 0.02128147004715643,
+  "late_time_offset_ci95_high_e_s": 0.022881242221846114,
+  "integrated_excess_point_e_per_pixel": 150.02748355923927,
+  "integrated_excess_ci95_low_e_per_pixel": 144.61192627156194,
+  "integrated_excess_ci95_high_e_per_pixel": 159.50179338774038,
+  "peak_excess_ci95_low_e_s": 0.30892494251541264,
+  "peak_excess_ci95_high_e_s": 0.3680022143106397,
+  "flagged_duration_ci95_low_s": 700.002157,
+  "flagged_duration_ci95_high_s": 700.002157,
+  "high_confidence_flagged_intervals": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "flt_filename": "icqtbbbxq_flt.fits",
+  "flt_bunit": "ELECTRONS/S",
+  "clean_start_positive_read": 7,
+  "clean_start_time_s": 702.934448,
+  "archived_flt_source_free_median_e_s": 1.00295889377594,
+  "all_read_fit_source_free_median_e_s": 0.9999221264637213,
+  "clean_read_fit_source_free_median_e_s": 0.8933724312079501,
+  "archived_flt_left_right_asymmetry": 0.06322293933251634,
+  "all_read_fit_left_right_asymmetry": 0.09547320518118511,
+  "clean_read_fit_left_right_asymmetry": 0.004021944345077433,
+  "all_read_vs_flt": {
+    "median_residual_e_s": -0.002678686124656826,
+    "residual_nmad_e_s": 0.0178587142636,
+    "valid_pixel_fraction": 0.781867464958043
+  },
+  "clean_read_vs_flt": {
+    "median_residual_e_s": -0.11108159197966738,
+    "residual_nmad_e_s": 0.052430201753842436,
+    "valid_pixel_fraction": 0.781867464958043
+  },
+  "median_valid_reads_all_fit": 15.0,
+  "median_valid_reads_clean_fit": 8.0,
+  "ima_datareject_any_fraction": 0.35804176330566406
+}

@@ -14,5 +14,21 @@
     "role": "nominal comparison calibrated nondestructive reads",
     "data_uri": "mast:HST/product/icqtbbc0q_ima.fits",
     "download_url": "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:HST/product/icqtbbc0q_ima.fits"
+  },
+  {
+    "filename": "icqtbbbxq_flt.fits",
+    "bytes": 16583040,
+    "sha256": "8b848b19ffac43857b413a2513e97194ea3a17a4899cb09292f293912c11c9d5",
+    "role": "pipeline ramp-fit comparison",
+    "data_uri": "mast:HST/product/icqtbbbxq_flt.fits",
+    "download_url": "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:HST/product/icqtbbbxq_flt.fits"
+  },
+  {
+    "filename": "icqtbbc0q_flt.fits",
+    "bytes": 16583040,
+    "sha256": "21b2876584378b9ccaa6fcc012c2a724d26f4a4c87aa68df74a5d52719824ace",
+    "role": "nominal pipeline ramp-fit comparison",
+    "data_uri": "mast:HST/product/icqtbbc0q_flt.fits",
+    "download_url": "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast:HST/product/icqtbbc0q_flt.fits"
   }
 ]
