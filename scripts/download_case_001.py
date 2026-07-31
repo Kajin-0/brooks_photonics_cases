@@ -12,7 +12,8 @@ def main() -> None:
     inventory = download_manifest(
         CASE_DIR / "data" / "manifest.csv",
         CASE_DIR / "data" / "raw",
-        include_optional=False,
+        include_optional=True,
+        timeout_s=300,
     )
     for item in inventory:
         print(f"{item['filename']}: {item['bytes']} bytes, sha256={item['sha256']}")
