@@ -1,5 +1,7 @@
 import numpy as np
+import pandas as pd
 
+from brooks_cases.comparison import compare_interval_summaries, comparison_metrics
 from brooks_cases.wfc3 import RampCube, instantaneous_rate, summarize_intervals
 
 
@@ -31,5 +33,34 @@ def test_instantaneous_rate_recovers_intervals() -> None:
 
 def test_summary_has_expected_columns() -> None:
     summary = summarize_intervals(make_cube(), border=10)
-    assert {"full_median_e_s", "left_right_asymmetry", "anomaly"}.issubset(summary.columns)
+    expected = {"full_median_e_s", "left_right_asymmetry", "anomaly"}
+    assert expected.issubset(summary.columns)
     assert len(summary) == 2
+
+
+def test_control_comparison_separates_static_offset_from_transient() -> None:
+    test = pd.DataFrame(
+        {
+            "interval_index": [0, 1, 2, 3],
+            "mid_time_s": [50.0, 150.0, 250.0, 350.0],
+            "interval_duration_s": [100.0] * 4,
+            "full_median_e_s": [1.4, 1.2, 1.0, 1.0],
+            "left_right_asymmetry": [0.2, 0.1, 0.0, 0.0],
+            "anomaly": [True, True, False, False],
+        }
+    )
+    control = test.copy()
+    control["full_median_e_s"] = [0.9, 0.9, 0.9, 0.9]
+    control["left_right_asymmetry"] = 0.0
+    control["anomaly"] = False
+
+    comparison = compare_interval_summaries(
+        test,
+        control,
+        late_intervals=2,
+        excess_threshold_e_s=0.05,
+    )
+    metrics = comparison_metrics(comparison)
+    assert np.isclose(comparison["late_time_offset_e_s"].iloc[0], 0.1)
+    assert comparison["common_mode_flag"].tolist() == [True, True, False, False]
+    assert np.isclose(metrics["integrated_transient_excess_e_per_pixel"], 60.0)
