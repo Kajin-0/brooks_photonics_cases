@@ -3,6 +3,9 @@
 **/data/raw/*.fits.gz
 **/data/raw/*.part
 
+# Print-specific report assets are generated from committed analysis products.
+**/report/_assets/
+
 .venv/
 __pycache__/
 .pytest_cache/
