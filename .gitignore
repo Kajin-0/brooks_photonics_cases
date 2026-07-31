@@ -1,8 +1,7 @@
-# Public source FITS products are downloaded reproducibly and are not committed.
-**/data/raw/*
-!**/data/raw/inventory.json
-**/*.fits
-**/*.fits.gz
+# Public source products are downloaded reproducibly and never committed.
+**/data/raw/*.fits
+**/data/raw/*.fits.gz
+**/data/raw/*.part
 
 .venv/
 __pycache__/
