@@ -212,6 +212,14 @@ _REPLACEMENTS = {
     "Temporal controls detect three additional affected intervals after the image appears stable": "Three affected intervals remain after visual stabilization",
     "Removing the transient materially changes the inferred count-rate product": "Excluding the transient changes the inferred count-rate product",
     "Acceptance should test temporal and spatial integrity separately": "Test temporal and spatial integrity separately",
+    "The strong spatial gradient ends before the control-relative transient. A spatial-only diagnostic would stop two intervals too early.": (
+        "The strong spatial gradient disappears while the control-relative transient persists. "
+        "A spatial-only diagnostic would stop three intervals too early."
+    ),
+    "Interval-specific color scales preserve late-stage spatial detail; absolute acceptance is based on the temporal statistics reported in the client report.": (
+        "Interval-specific color scales preserve late-stage spatial detail; absolute acceptance "
+        "is based on the temporal statistics reported in Figure 2."
+    ),
     'style="margin-top:10px;max-height:7.35in;object-fit:contain"': (
         'style="margin-top:7px;max-height:7.65in;object-fit:contain;'
         'width:104%;margin-left:-2%"'
