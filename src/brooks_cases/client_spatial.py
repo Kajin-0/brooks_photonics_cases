@@ -14,6 +14,7 @@ MUTED = "#667085"
 ORANGE = "#C35B2A"
 PURPLE = "#6A3FA0"
 RATE_UNIT = r"electrons s$^{-1}$ pixel$^{-1}$"
+FONT_FAMILY = ["IBM Plex Sans", "DejaVu Sans"]
 
 
 def _downsample_mean(array: np.ndarray, factor: int = 4) -> np.ndarray:
@@ -39,6 +40,7 @@ def plot_client_spatial_sequence(
     border: int = 50,
 ) -> None:
     """Generate the six-panel client figure directly from the detector arrays."""
+    plt.rcParams.update({"font.family": FONT_FAMILY})
     affected_rates, _ = instantaneous_rate(affected_cube)
     control_rates, _ = instantaneous_rate(control_cube)
 
@@ -59,7 +61,7 @@ def plot_client_spatial_sequence(
         ha="center",
         va="top",
         fontsize=12,
-        fontweight="bold",
+        fontweight=600,
         color=ORANGE,
     )
     figure.text(
@@ -69,7 +71,7 @@ def plot_client_spatial_sequence(
         ha="center",
         va="top",
         fontsize=12,
-        fontweight="bold",
+        fontweight=600,
         color=PURPLE,
     )
 
@@ -146,11 +148,11 @@ def plot_client_spatial_sequence(
         figure.text(
             0.018,
             row_center,
-            f"INTERVAL {interval}\n{stage_label}",
+            f"Interval {interval}\n{stage_label}",
             ha="left",
             va="center",
             fontsize=9.4,
-            fontweight="bold",
+            fontweight=600,
             color=INK,
             linespacing=1.25,
         )
