@@ -8,11 +8,17 @@ from pathlib import Path
 
 from weasyprint import HTML
 
+from brooks_cases.advanced import flt_reconstruction_metrics, make_source_free_mask
 from brooks_cases.client_spatial import plot_client_spatial_sequence
 from brooks_cases.report_assets import _build_report_hero, _load_context
+from brooks_cases.report_map_figures import (
+    plot_flt_reconstruction_maps,
+    plot_full_spatial_sequence,
+)
+from brooks_cases.report_priority1 import add_priority1_context, enhance_priority1_pages
 from brooks_cases.report_templates import _client_pages, _technical_appendix
 from brooks_cases.report_theme import REPORT_CSS
-from brooks_cases.wfc3 import load_ima
+from brooks_cases.wfc3 import load_flt, load_ima
 
 REPOSITORY_URL = "https://github.com/Kajin-0/brooks_photonics_cases"
 WEBSITE_URL = "https://brooks-photonics.com/"
@@ -43,14 +49,40 @@ def _resolve_source_sha() -> str:
     return os.environ.get("GITHUB_SHA", "repository history")
 
 
-def _prepare_client_spatial_figure(case_dir: Path) -> Path:
-    """Generate the client spatial sequence directly from the source FITS arrays."""
+def _prepare_report_figures(case_dir: Path, context: dict[str, object]) -> None:
+    """Generate all report-visible maps directly from the source arrays."""
     raw = case_dir / "data" / "raw"
+    figures = case_dir / "figures"
     affected = load_ima(raw / "icqtbbbxq_ima.fits")
     control = load_ima(raw / "icqtbbc0q_ima.fits")
-    output = case_dir / "figures" / "client_spatial_sequence.png"
-    plot_client_spatial_sequence(affected, control, output)
-    return output
+
+    plot_client_spatial_sequence(
+        affected,
+        control,
+        figures / "client_spatial_sequence.png",
+    )
+    plot_full_spatial_sequence(
+        affected,
+        control,
+        figures / "representative_interval_maps.png",
+    )
+
+    source_result = make_source_free_mask(control)
+    common_mode_intervals = context["comparison"]["common_mode_flagged_intervals"]
+    clean_start_positive_read = (
+        max(common_mode_intervals) + 1 if common_mode_intervals else 0
+    )
+    affected_flt = load_flt(raw / "icqtbbbxq_flt.fits")
+    _, flt_maps = flt_reconstruction_metrics(
+        affected,
+        affected_flt,
+        source_result.analysis_mask,
+        clean_start_positive_read=clean_start_positive_read,
+    )
+    plot_flt_reconstruction_maps(
+        flt_maps,
+        figures / "flt_reconstruction.png",
+    )
 
 
 def _linkify(pages: str) -> str:
@@ -90,6 +122,7 @@ def _linkify(pages: str) -> str:
         ),
         "WFC3 Data Handbook": "https://hst-docs.stsci.edu/wfc3dhb",
         "WFC3 Instrument Handbook": "https://hst-docs.stsci.edu/wfc3ihb",
+        "Wide Field Camera 3 Instrument Handbook": "https://hst-docs.stsci.edu/wfc3ihb",
     }
     for title, url in references.items():
         pages = pages.replace(
@@ -103,11 +136,16 @@ def _linkify(pages: str) -> str:
     return pages
 
 
-def _build_report(case_dir: Path, output_path: Path, *, technical: bool) -> None:
+def _build_report(
+    case_dir: Path,
+    output_path: Path,
+    *,
+    technical: bool,
+    context: dict[str, object],
+) -> None:
     figures = case_dir / "figures"
     report_assets = case_dir / "report" / "_assets"
     report_assets.mkdir(parents=True, exist_ok=True)
-    context = _load_context(case_dir)
     hero_path = _build_report_hero(
         figures / "representative_interval_maps.png",
         report_assets / "report_hero.png",
@@ -125,6 +163,7 @@ def _build_report(case_dir: Path, output_path: Path, *, technical: bool) -> None
     if technical:
         os.environ["GITHUB_SHA"] = _resolve_source_sha()
         pages += _technical_appendix(context, assets)
+    pages = enhance_priority1_pages(pages, context)
     pages = _linkify(pages)
     html_document = (
         "<!doctype html><html><head><meta charset='utf-8'><style>"
@@ -140,13 +179,17 @@ def _build_report(case_dir: Path, output_path: Path, *, technical: bool) -> None
 
 def build_case_001_report(case_dir: Path, output_path: Path) -> None:
     """Build the client report and its technical companion."""
-    _prepare_client_spatial_figure(case_dir)
-    _build_report(case_dir, output_path, technical=False)
+    context = _load_context(case_dir)
+    add_priority1_context(case_dir, context)
+    _prepare_report_figures(case_dir, context)
+    _build_report(case_dir, output_path, technical=False, context=context)
     technical_path = output_path.with_name(f"{output_path.stem}_Technical.pdf")
-    _build_report(case_dir, technical_path, technical=True)
+    _build_report(case_dir, technical_path, technical=True, context=context)
 
 
 def build_case_001_technical_report(case_dir: Path, output_path: Path) -> None:
     """Build the nine-page technical version with method and provenance appendices."""
-    _prepare_client_spatial_figure(case_dir)
-    _build_report(case_dir, output_path, technical=True)
+    context = _load_context(case_dir)
+    add_priority1_context(case_dir, context)
+    _prepare_report_figures(case_dir, context)
+    _build_report(case_dir, output_path, technical=True, context=context)
