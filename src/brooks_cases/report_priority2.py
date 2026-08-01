@@ -12,7 +12,7 @@ CASE_URL = (
     "https://github.com/Kajin-0/brooks_photonics_cases/"
     "tree/main/cases/001_wfc3_ir_ramp_anomaly"
 )
-REPORT_REVISION_DEFAULT = "1.4"
+REPORT_REVISION_DEFAULT = "1.5"
 
 PRIORITY2_CSS = r'''
 .document-control{text-align:right;color:#566173;font-size:7.5pt;line-height:1.25}
@@ -118,18 +118,16 @@ def enhance_priority2_pages(
         '<div class="contact">brooks-photonics.com &nbsp; | &nbsp; '
         'terence@brooks-photonics.com</div></div>'
     )
-    combined_panel = (
-        '<div class="qr-panel">'
-        f'<a href="{CASE_URL}" style="text-decoration:none">'
-        f'<img src="{assets["repository_qr"]}" alt="QR code for the Case 001 repository">'
-        "</a>"
+    compact_provenance_panel = (
+        '<div class="qr-panel" style="margin-top:14px">'
+        f'<a href="{CASE_URL}"><img src="{assets["repository_qr"]}" '
+        'alt="QR code linking to the Case 001 source repository"></a>'
         '<div><h3>Source and reproducibility package</h3>'
         '<p>Source code, pinned product manifest, derived tables, figures, tests, '
         'and the report-generation workflow.</p>'
-        '<p><b>Brooks Photonics:</b> independent, physics-based analysis of infrared '
-        'detector electrical, spectral, temporal, and noise data.</p>'
-        '<div class="contact">brooks-photonics.com &nbsp; | &nbsp; '
-        'terence@brooks-photonics.com</div></div></div>'
+        '<div class="contact">Brooks Photonics &nbsp; | &nbsp; '
+        'brooks-photonics.com &nbsp; | &nbsp; terence@brooks-photonics.com</div>'
+        '</div></div>'
     )
-    pages = pages.replace(original_cta, combined_panel, 1)
+    pages = pages.replace(original_cta, compact_provenance_panel, 1)
     return pages
