@@ -16,6 +16,13 @@ from brooks_cases.report_map_figures import (
     plot_full_spatial_sequence,
 )
 from brooks_cases.report_priority1 import add_priority1_context, enhance_priority1_pages
+from brooks_cases.report_priority2 import (
+    PRIORITY2_CSS,
+    add_priority2_context,
+    build_repository_qr,
+    enhance_priority2_pages,
+    metadata_head,
+)
 from brooks_cases.report_templates import _client_pages, _technical_appendix
 from brooks_cases.report_theme import REPORT_CSS
 from brooks_cases.wfc3 import load_flt, load_ima
@@ -143,6 +150,9 @@ def _build_report(
     technical: bool,
     context: dict[str, object],
 ) -> None:
+    report_context = dict(context)
+    add_priority2_context(report_context, technical=technical)
+
     figures = case_dir / "figures"
     report_assets = case_dir / "report" / "_assets"
     report_assets.mkdir(parents=True, exist_ok=True)
@@ -150,6 +160,7 @@ def _build_report(
         figures / "representative_interval_maps.png",
         report_assets / "report_hero.png",
     )
+    qr_path = build_repository_qr(report_assets / "case_001_repository_qr.png")
     assets = {
         "hero": hero_path.resolve().as_uri(),
         "client_spatial": (figures / "client_spatial_sequence.png").resolve().as_uri(),
@@ -158,17 +169,27 @@ def _build_report(
         "flt": (figures / "flt_reconstruction.png").resolve().as_uri(),
         "spatial_dq": (figures / "spatial_and_dq.png").resolve().as_uri(),
         "full_spatial": (figures / "representative_interval_maps.png").resolve().as_uri(),
+        "repository_qr": qr_path.resolve().as_uri(),
     }
-    pages = _client_pages(context, assets)
+    pages = _client_pages(report_context, assets)
     if technical:
         os.environ["GITHUB_SHA"] = _resolve_source_sha()
-        pages += _technical_appendix(context, assets)
-    pages = enhance_priority1_pages(pages, context)
+        pages += _technical_appendix(report_context, assets)
+    pages = enhance_priority1_pages(pages, report_context)
+    pages = enhance_priority2_pages(
+        pages,
+        report_context,
+        assets,
+        technical=technical,
+    )
     pages = _linkify(pages)
     html_document = (
-        "<!doctype html><html><head><meta charset='utf-8'><style>"
+        "<!doctype html><html lang='en'><head><meta charset='utf-8'>"
+        + metadata_head(report_context, technical=technical)
+        + "<style>"
         + REPORT_CSS
         + LINK_CSS
+        + PRIORITY2_CSS
         + "</style></head><body>"
         + pages
         + "</body></html>"
