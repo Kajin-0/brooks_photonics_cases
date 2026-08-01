@@ -49,11 +49,11 @@ def test_priority2_page_enhancement_adds_controls_and_qr(monkeypatch) -> None:
         technical=True,
     )
     assert "BP-CS-001-T" in enhanced
-    assert "Rev 1.2" in enhanced
+    assert "Rev 1.3" in enhanced
     assert "2026-08-01" in enhanced
     assert CASE_URL in enhanced
     assert "file:///tmp/qr.png" in enhanced
-    assert "Open the reproducible technical package" in enhanced
+    assert "Source and reproducibility package" in enhanced
     assert "independent, physics-based analysis" in enhanced
 
 
