@@ -5,14 +5,26 @@ from __future__ import annotations
 import os
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import quote
 
 import qrcode
 
-CASE_URL = (
-    "https://github.com/Kajin-0/brooks_photonics_cases/"
-    "tree/main/cases/001_wfc3_ir_ramp_anomaly"
-)
-REPORT_REVISION_DEFAULT = "1.5"
+REPOSITORY_URL = "https://github.com/Kajin-0/brooks_photonics_cases"
+CASE_PATH = "cases/001_wfc3_ir_ramp_anomaly"
+REPORT_REVISION_DEFAULT = "1.6"
+
+
+def source_ref() -> str:
+    """Return the immutable source ref supplied by the publication workflow."""
+    return os.environ.get("REPORT_SOURCE_REF", "main")
+
+
+def case_url() -> str:
+    """Return the source-package URL for the selected source ref."""
+    return f"{REPOSITORY_URL}/tree/{quote(source_ref(), safe='')}/{CASE_PATH}"
+
+
+CASE_URL = case_url()
 
 PRIORITY2_CSS = r'''
 .document-control{text-align:right;color:#566173;font-size:7.5pt;line-height:1.25}
@@ -31,7 +43,7 @@ def build_repository_qr(destination: Path) -> Path:
         box_size=8,
         border=2,
     )
-    qr.add_data(CASE_URL)
+    qr.add_data(case_url())
     qr.make(fit=True)
     image = qr.make_image(fill_color="#172033", back_color="white")
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -54,6 +66,8 @@ def add_priority2_context(context: dict[str, object], *, technical: bool) -> Non
         "build_date_utc": _build_date_utc(),
         "workflow_run_id": os.environ.get("GITHUB_RUN_ID", "local build"),
         "edition": "Technical report" if technical else "Client report",
+        "source_ref": source_ref(),
+        "source_url": case_url(),
     }
 
 
@@ -90,6 +104,9 @@ def enhance_priority2_pages(
 ) -> str:
     """Insert document control and the technical-package QR panel."""
     control = context["document_control"]
+    source_url = str(control["source_url"])
+    source_ref_text = str(control["source_ref"])
+    source_ref_label = source_ref_text[:12] if len(source_ref_text) > 12 else source_ref_text
     cover_control = (
         '<div class="document-control">'
         f'<div class="doc-id">{control["document_id"]}</div>'
@@ -120,11 +137,11 @@ def enhance_priority2_pages(
     )
     compact_provenance_panel = (
         '<div class="qr-panel" style="margin-top:14px">'
-        f'<a href="{CASE_URL}"><img src="{assets["repository_qr"]}" '
+        f'<a href="{source_url}"><img src="{assets["repository_qr"]}" '
         'alt="QR code linking to the Case 001 source repository"></a>'
         '<div><h3>Source and reproducibility package</h3>'
-        '<p>Source code, pinned product manifest, derived tables, figures, tests, '
-        'and the report-generation workflow.</p>'
+        f'<p>Source code pinned to <span class="mono">{source_ref_label}</span>, '
+        'with the product manifest, derived tables, figures, tests, and report workflow.</p>'
         '<div class="contact">Brooks Photonics &nbsp; | &nbsp; '
         'brooks-photonics.com &nbsp; | &nbsp; terence@brooks-photonics.com</div>'
         '</div></div>'
