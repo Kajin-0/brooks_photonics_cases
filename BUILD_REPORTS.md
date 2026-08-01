@@ -8,7 +8,7 @@ The reports are not authored in LaTeX. They are generated programmatically from:
 - CSS typography and layout
 - WeasyPrint PDF rendering
 
-This source package contains the complete report generator, tests, pinned-data manifest, derived outputs, figures, and the validated Revision 1.6 PDFs. The original raw FITS products are not bundled; the download script retrieves and verifies them from MAST.
+This source package contains the complete report generator, tests, pinned-data manifest, derived outputs, figures, and the validated Revision 1.7 PDFs. The original raw FITS products are not bundled; the download script retrieves and verifies them from MAST.
 
 ## Recommended environment
 
@@ -17,6 +17,7 @@ The reference build uses:
 - Ubuntu 24.04 or WSL2
 - Python 3.12
 - IBM Plex fonts
+- Liberation Sans for the Brooks Photonics running-header wordmark
 - WeasyPrint 69 or the version resolved by `pyproject.toml`
 
 Windows users should use WSL2 for the closest match to the validated GitHub Actions build.
@@ -25,7 +26,7 @@ Windows users should use WSL2 for the closest match to the validated GitHub Acti
 
 ```bash
 sudo apt-get update
-sudo apt-get install -y fonts-ibm-plex python3.12 python3.12-venv
+sudo apt-get install -y fonts-ibm-plex fonts-liberation python3.12 python3.12-venv
 
 python3.12 -m venv .venv
 source .venv/bin/activate
@@ -91,7 +92,7 @@ src/brooks_cases/client_spatial.py
 
 - `report_templates.py` contains the page content and HTML structure.
 - `report_theme.py` contains the baseline visual system.
-- `report_priority4.py` contains the final IBM Plex typography, multicolor accents, hierarchy, and editorial replacements.
+- `report_priority4.py` contains the final IBM Plex typography, restored Brooks Photonics header wordmark, multicolor accents, hierarchy, and editorial replacements.
 - `report_charts.py`, `report_map_figures.py`, and `client_spatial.py` generate report-specific figures.
 - `report_priority2.py` controls revision metadata, the source URL, and QR generation.
 
