@@ -21,14 +21,27 @@ def test_editorial_layer_removes_template_numbering() -> None:
     assert "Appendix A - Method and DQ policy" in enhanced
 
 
-def test_editorial_css_uses_institutional_typography_and_reduces_ui_tropes() -> None:
+def test_editorial_css_uses_institutional_typography_and_multicolor_accents() -> None:
     assert "IBM Plex Sans" in PRIORITY4_CSS
     assert ".cover-accent{" in PRIORITY4_CSS
     assert "linear-gradient" in PRIORITY4_CSS
     assert "#65408A" in PRIORITY4_CSS
-    assert ".pill,.pill.orange" in PRIORITY4_CSS
-    assert "background:none" in PRIORITY4_CSS
+    assert ".metric.teal{border-color:#157A7A}" in PRIORITY4_CSS
+    assert ".metric.blue{border-color:#2D5F9A}" in PRIORITY4_CSS
+    assert ".card.orange .num{color:#C35B2A}" in PRIORITY4_CSS
+    assert ".card.teal .num{color:#157A7A}" in PRIORITY4_CSS
+    assert ".card.blue .num{color:#2D5F9A}" in PRIORITY4_CSS
+    assert ".step:nth-child(2){border-color:#C35B2A}" in PRIORITY4_CSS
     assert ".step:before{display:none}" in PRIORITY4_CSS
+
+
+def test_multicolor_accents_preserve_square_geometry() -> None:
+    assert ".pill,.pill.orange" in PRIORITY4_CSS
+    assert "border-radius:0" in PRIORITY4_CSS
+    assert ".pill.orange{background:#F7E4DB" in PRIORITY4_CSS
+    assert ".pill.teal{background:#DCEEEE" in PRIORITY4_CSS
+    assert ".result-strip>div:first-child{border-top:3px solid #C35B2A}" in PRIORITY4_CSS
+    assert ".result-strip>div:nth-child(2){border-top:3px solid #157A7A}" in PRIORITY4_CSS
 
 
 def test_final_hierarchy_strengthens_metrics_captions_and_results() -> None:
