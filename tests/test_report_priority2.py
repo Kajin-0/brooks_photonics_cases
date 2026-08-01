@@ -53,7 +53,7 @@ def test_priority2_page_enhancement_adds_controls_and_qr(monkeypatch) -> None:
         technical=True,
     )
     assert "BP-CS-001-T" in enhanced
-    assert "Rev 1.6" in enhanced
+    assert "Rev 1.7" in enhanced
     assert "2026-08-01" in enhanced
     assert case_url() in enhanced
     assert "fedcba987654" in enhanced
