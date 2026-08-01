@@ -45,13 +45,13 @@ def enhance_priority1_pages(pages: str, context: dict[str, object]) -> str:
 
 <section class=\"page\">
   <div class=\"section-tag\">01 / Spatial evolution</div>"""
-    page_two_replacement = """      </ul></div>
-%s    </div>
+    page_two_replacement = f"""      </ul></div>
+{contribution_note}    </div>
   </div>
 </section>
 
 <section class=\"page\">
-  <div class=\"section-tag\">01 / Spatial evolution</div>""" % contribution_note
+  <div class=\"section-tag\">01 / Spatial evolution</div>"""
     pages = pages.replace(page_two_marker, page_two_replacement, 1)
 
     original_caption = (
