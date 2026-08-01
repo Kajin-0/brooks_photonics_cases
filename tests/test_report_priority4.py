@@ -23,7 +23,29 @@ def test_editorial_layer_removes_template_numbering() -> None:
 
 def test_editorial_css_uses_institutional_typography_and_reduces_ui_tropes() -> None:
     assert "IBM Plex Sans" in PRIORITY4_CSS
-    assert ".cover-accent{background:#6A3FA0}" in PRIORITY4_CSS
+    assert ".cover-accent{" in PRIORITY4_CSS
+    assert "linear-gradient" in PRIORITY4_CSS
+    assert "#65408A" in PRIORITY4_CSS
     assert ".pill,.pill.orange" in PRIORITY4_CSS
     assert "background:none" in PRIORITY4_CSS
     assert ".step:before{display:none}" in PRIORITY4_CSS
+
+
+def test_final_hierarchy_strengthens_metrics_captions_and_results() -> None:
+    assert ".card .num{" in PRIORITY4_CSS
+    assert "font-size:21.5pt" in PRIORITY4_CSS
+    assert ".figcap{" in PRIORITY4_CSS
+    assert "font-size:8.1pt" in PRIORITY4_CSS
+    assert ".result-strip .big{" in PRIORITY4_CSS
+    assert "font-weight:700" in PRIORITY4_CSS
+
+
+def test_spatial_figure_is_enlarged_without_restoring_section_numbers() -> None:
+    pages = (
+        '<div class="section-tag">01 / Spatial evolution</div>'
+        '<img class="figure" style="margin-top:10px;max-height:7.35in;object-fit:contain">'
+    )
+    enhanced = enhance_priority4_pages(pages)
+    assert "01 /" not in enhanced
+    assert "max-height:7.65in" in enhanced
+    assert "width:104%" in enhanced
