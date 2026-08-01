@@ -5,10 +5,10 @@ from __future__ import annotations
 PRIORITY4_CSS = r'''
 @page {
   @top-left {
-    content: "Brooks Photonics  |  Case study 001";
-    font: 500 7.4pt "IBM Plex Sans", "DejaVu Sans", sans-serif;
-    color:#5D6675;
-    letter-spacing:.01em;
+    content: "BROOKS PHOTONICS  /  CASE STUDY 001";
+    font: 600 7.3pt "Liberation Sans", Arial, sans-serif;
+    color:#6A3FA0;
+    letter-spacing:.08em;
   }
   @top-right {
     content: "WFC3/IR HgCdTe ramp integrity";
