@@ -1,4 +1,4 @@
-"""Editorial de-templating for the final Case 001 report design."""
+"""Editorial de-templating and final visual hierarchy for Case 001."""
 
 from __future__ import annotations
 
@@ -33,19 +33,44 @@ h3{font-weight:600}
   font-weight:500;
   color:#5E4A72;
 }
-.cover-accent{background:#6A3FA0}
+.cover-accent{
+  background:linear-gradient(90deg,
+    #65408A 0%,
+    #4D57A2 18%,
+    #3478A8 35%,
+    #238D8A 52%,
+    #85A84B 66%,
+    #D39A3B 82%,
+    #BF5A3F 100%);
+}
 .rule{height:1px;background:#BCA9CE;margin:8px 0 18px}
 .metrics{grid-template-columns:1.32fr repeat(3,1fr)}
 .metric{background:transparent;border-top:2px solid #6A3FA0;padding:9px 0 8px}
 .metric.orange{border-color:#C35B2A}
 .metric.teal,.metric.blue{border-color:#6A3FA0}
-.metric:first-child .value{font-size:19pt}
+.metric .value{
+  font-size:19.5pt;
+  font-weight:650;
+  line-height:1;
+  letter-spacing:-.012em;
+  font-variant-numeric:tabular-nums;
+}
+.metric:first-child .value{font-size:20.5pt;font-weight:700}
+.metric .label{font-size:7.9pt;font-weight:500;color:#535E6F}
 .card{
   border:0;
   border-top:1px solid #CBD2DC;
   padding:9px 0 7px;
   background:transparent;
 }
+.card .num{
+  font-size:21.5pt;
+  font-weight:700;
+  line-height:.98;
+  letter-spacing:-.015em;
+  font-variant-numeric:tabular-nums;
+}
+.card h3{font-size:9.2pt;font-weight:600;margin-top:5px}
 .card.teal .num,.card.blue .num{color:#172033}
 .banner{
   background:#F4F2F6;
@@ -66,6 +91,13 @@ h3{font-weight:600}
   background:transparent;
   padding:10px 0;
 }
+.figcap{
+  font-size:8.1pt;
+  color:#4B5667;
+  line-height:1.34;
+  margin-top:6px;
+}
+.figcap b{font-weight:650;color:#303B4B}
 .result-strip{
   background:transparent;
   border-top:1px solid #9FA8B7;
@@ -74,7 +106,13 @@ h3{font-weight:600}
 }
 .result-strip>div{background:white;color:#172033;padding:10px 14px}
 .result-strip>div+div{border-left:1px solid #CDD3DD}
-.result-strip .small{color:#5C6676}
+.result-strip .big{
+  font-size:18.5pt;
+  font-weight:700;
+  letter-spacing:-.012em;
+  font-variant-numeric:tabular-nums;
+}
+.result-strip .small{color:#5C6676;font-weight:500}
 .pill,.pill.orange,.pill.teal,.pill.gray{
   display:inline;
   padding:0;
@@ -122,11 +160,15 @@ _REPLACEMENTS = {
     "Temporal controls detect three additional affected intervals after the image appears stable": "Three affected intervals remain after visual stabilization",
     "Removing the transient materially changes the inferred count-rate product": "Excluding the transient changes the inferred count-rate product",
     "Acceptance should test temporal and spatial integrity separately": "Test temporal and spatial integrity separately",
+    'style="margin-top:10px;max-height:7.35in;object-fit:contain"': (
+        'style="margin-top:7px;max-height:7.65in;object-fit:contain;'
+        'width:104%;margin-left:-2%"'
+    ),
 }
 
 
 def enhance_priority4_pages(pages: str) -> str:
-    """Remove template-like numbering and standardize editorial language."""
+    """Remove template-like numbering and strengthen the final editorial hierarchy."""
     for old, new in _REPLACEMENTS.items():
         pages = pages.replace(old, new)
     return pages
