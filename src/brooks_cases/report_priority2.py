@@ -11,7 +11,7 @@ import qrcode
 
 REPOSITORY_URL = "https://github.com/Kajin-0/brooks_photonics_cases"
 CASE_PATH = "cases/001_wfc3_ir_ramp_anomaly"
-REPORT_REVISION_DEFAULT = "1.6"
+REPORT_REVISION_DEFAULT = "1.7"
 
 
 def source_ref() -> str:
