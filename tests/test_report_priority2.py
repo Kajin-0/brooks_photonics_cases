@@ -54,7 +54,8 @@ def test_priority2_page_enhancement_adds_controls_and_qr(monkeypatch) -> None:
     assert CASE_URL in enhanced
     assert "file:///tmp/qr.png" in enhanced
     assert "Source and reproducibility package" in enhanced
-    assert "independent, physics-based analysis" in enhanced
+    assert "Brooks Photonics" in enhanced
+    assert "terence@brooks-photonics.com" in enhanced
 
 
 def test_repository_qr_is_written(tmp_path) -> None:
