@@ -44,33 +44,33 @@ def plot_client_spatial_sequence(
     affected_rates, _ = instantaneous_rate(affected_cube)
     control_rates, _ = instantaneous_rate(control_cube)
 
-    figure, axes = plt.subplots(len(stages), 2, figsize=(10.2, 8.0))
+    figure, axes = plt.subplots(len(stages), 2, figsize=(10.8, 8.25))
     figure.patch.set_facecolor("white")
     figure.subplots_adjust(
-        left=0.185,
-        right=0.965,
+        left=0.145,
+        right=0.982,
         top=0.925,
         bottom=0.045,
-        hspace=0.24,
-        wspace=0.18,
+        hspace=0.22,
+        wspace=0.15,
     )
     figure.text(
-        0.39,
+        0.375,
         0.965,
         "Affected exposure",
         ha="center",
         va="top",
-        fontsize=12,
+        fontsize=12.2,
         fontweight=600,
         color=ORANGE,
     )
     figure.text(
-        0.775,
+        0.785,
         0.965,
         "Affected minus control",
         ha="center",
         va="top",
-        fontsize=12,
+        fontsize=12.2,
         fontweight=600,
         color=PURPLE,
     )
@@ -137,21 +137,21 @@ def plot_client_spatial_sequence(
             colorbar = figure.colorbar(
                 rendered,
                 ax=axis,
-                fraction=0.044,
-                pad=0.025,
+                fraction=0.042,
+                pad=0.022,
             )
-            colorbar.ax.tick_params(labelsize=7, colors=MUTED, length=2)
+            colorbar.ax.tick_params(labelsize=7.2, colors=MUTED, length=2)
             colorbar.outline.set_linewidth(0.6)
             colorbar.outline.set_edgecolor("#AAB2BF")
-            colorbar.set_label(RATE_UNIT, fontsize=7.1, color=MUTED, labelpad=5)
+            colorbar.set_label(RATE_UNIT, fontsize=7.2, color=MUTED, labelpad=5)
 
         figure.text(
-            0.018,
+            0.016,
             row_center,
             f"Interval {interval}\n{stage_label}",
             ha="left",
             va="center",
-            fontsize=9.4,
+            fontsize=9.8,
             fontweight=600,
             color=INK,
             linespacing=1.25,
@@ -163,6 +163,6 @@ def plot_client_spatial_sequence(
         dpi=240,
         bbox_inches="tight",
         facecolor="white",
-        pad_inches=0.08,
+        pad_inches=0.06,
     )
     plt.close(figure)
