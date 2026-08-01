@@ -1,0 +1,15 @@
+# Public source products are downloaded reproducibly and never committed.
+**/data/raw/*.fits
+**/data/raw/*.fits.gz
+**/data/raw/*.part
+
+# Print-specific report assets are generated from committed analysis products.
+**/report/_assets/
+
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+.ipynb_checkpoints/
+.DS_Store

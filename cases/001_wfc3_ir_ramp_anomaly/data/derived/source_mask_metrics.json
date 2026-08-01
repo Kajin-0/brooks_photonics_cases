@@ -1,0 +1,10 @@
+{
+  "source_free_late_time_offset_e_s": 0.021544734098001173,
+  "source_free_integrated_excess_e_per_pixel": 196.59586625300346,
+  "maximum_source_mask_effect_e_s": 0.0031339354464139935,
+  "median_source_mask_effect_e_s": 7.36585091659081e-05,
+  "source_free_flag_agreement_fraction": 1.0,
+  "retained_fraction": 0.9425036543543037,
+  "background_median_e_s": 0.8654934501476175,
+  "background_scale_e_s": 0.09759989134810514
+}
