@@ -14,6 +14,7 @@ dependencies = [
   "numpy>=1.26",
   "pandas>=2.2",
   "Pillow>=10.0",
+  "qrcode>=8.0",
   "requests>=2.31",
   "scipy>=1.12",
   "weasyprint>=68.0",
