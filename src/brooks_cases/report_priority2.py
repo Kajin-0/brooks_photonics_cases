@@ -17,7 +17,7 @@ REPORT_REVISION_DEFAULT = "1.2"
 PRIORITY2_CSS = r'''
 .document-control{text-align:right;color:#566173;font-size:7.5pt;line-height:1.25}
 .document-control .doc-id{font-size:9.2pt;font-weight:750;color:#172033;letter-spacing:.035em}
-.qr-panel{display:grid;grid-template-columns:0.82in 1fr;gap:11px;align-items:center;border:1px solid #DDE2EA;border-radius:4px;padding:8px 10px;margin-top:10px;background:#FAFBFC}
+.qr-panel{display:grid;grid-template-columns:0.82in 1fr;gap:11px;align-items:center;border:1px solid #DDE2EA;border-radius:0;padding:8px 10px;margin-top:10px;background:#FAFBFC}
 .qr-panel img{width:.76in;height:.76in;image-rendering:crisp-edges}.qr-panel h3{margin-bottom:2px}.qr-panel p{font-size:7.35pt;color:#566173;margin-bottom:2px;line-height:1.27}.qr-panel .contact{font-size:7.35pt;font-weight:700;color:#172033;margin-top:4px;white-space:nowrap}
 .doc-control-table td:first-child{width:39%}
 '''
