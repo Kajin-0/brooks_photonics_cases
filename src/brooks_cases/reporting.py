@@ -23,6 +23,7 @@ from brooks_cases.report_priority2 import (
     enhance_priority2_pages,
     metadata_head,
 )
+from brooks_cases.report_priority4 import PRIORITY4_CSS, enhance_priority4_pages
 from brooks_cases.report_templates import _client_pages, _technical_appendix
 from brooks_cases.report_theme import REPORT_CSS
 from brooks_cases.wfc3 import load_flt, load_ima
@@ -182,6 +183,7 @@ def _build_report(
         assets,
         technical=technical,
     )
+    pages = enhance_priority4_pages(pages)
     pages = _linkify(pages)
     html_document = (
         "<!doctype html><html lang='en'><head><meta charset='utf-8'>"
@@ -190,6 +192,7 @@ def _build_report(
         + REPORT_CSS
         + LINK_CSS
         + PRIORITY2_CSS
+        + PRIORITY4_CSS
         + "</style></head><body>"
         + pages
         + "</body></html>"
