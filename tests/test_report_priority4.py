@@ -62,3 +62,17 @@ def test_spatial_figure_is_enlarged_without_restoring_section_numbers() -> None:
     assert "01 /" not in enhanced
     assert "max-height:7.65in" in enhanced
     assert "width:104%" in enhanced
+
+
+def test_final_wording_is_consistent_and_standalone() -> None:
+    pages = (
+        "The strong spatial gradient ends before the control-relative transient. "
+        "A spatial-only diagnostic would stop two intervals too early. "
+        "Interval-specific color scales preserve late-stage spatial detail; absolute "
+        "acceptance is based on the temporal statistics reported in the client report."
+    )
+    enhanced = enhance_priority4_pages(pages)
+    assert "disappears while the control-relative transient persists" in enhanced
+    assert "stop three intervals too early" in enhanced
+    assert "reported in Figure 2" in enhanced
+    assert "reported in the client report" not in enhanced
