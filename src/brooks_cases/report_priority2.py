@@ -123,9 +123,9 @@ def enhance_priority2_pages(
         f'<a href="{CASE_URL}" style="text-decoration:none">'
         f'<img src="{assets["repository_qr"]}" alt="QR code for the Case 001 repository">'
         "</a>"
-        '<div><h3>Open the reproducible technical package</h3>'
-        '<p>Scan or select the code for the source, pinned manifest, derived tables, '
-        'figures, tests, and report workflow.</p>'
+        '<div><h3>Source and reproducibility package</h3>'
+        '<p>Source code, pinned product manifest, derived tables, figures, tests, '
+        'and the report-generation workflow.</p>'
         '<p><b>Brooks Photonics:</b> independent, physics-based analysis of infrared '
         'detector electrical, spectral, temporal, and noise data.</p>'
         '<div class="contact">brooks-photonics.com &nbsp; | &nbsp; '
