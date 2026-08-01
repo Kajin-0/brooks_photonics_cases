@@ -2,17 +2,105 @@
 
 from __future__ import annotations
 
+import json
+import os
 from pathlib import Path
 
 from weasyprint import HTML
 
-from brooks_cases.report_assets import (
-    _build_client_spatial_figure,
-    _build_report_hero,
-    _load_context,
-)
+from brooks_cases.client_spatial import plot_client_spatial_sequence
+from brooks_cases.report_assets import _build_report_hero, _load_context
 from brooks_cases.report_templates import _client_pages, _technical_appendix
 from brooks_cases.report_theme import REPORT_CSS
+from brooks_cases.wfc3 import load_ima
+
+REPOSITORY_URL = "https://github.com/Kajin-0/brooks_photonics_cases"
+WEBSITE_URL = "https://brooks-photonics.com/"
+CONTACT_EMAIL = "terence@brooks-photonics.com"
+
+LINK_CSS = r'''
+a{color:#4A286F;text-decoration:underline;text-decoration-thickness:.6px;text-underline-offset:1.5px}
+.sources a{color:#354760}.cta a{color:white;text-decoration:none}.contact-link{white-space:nowrap}
+'''
+
+
+def _resolve_source_sha() -> str:
+    """Resolve the actual source-head SHA instead of a temporary PR merge SHA."""
+    explicit = os.environ.get("ANALYSIS_SOURCE_SHA")
+    if explicit:
+        return explicit
+    event_path = os.environ.get("GITHUB_EVENT_PATH")
+    if event_path:
+        try:
+            event = json.loads(Path(event_path).read_text(encoding="utf-8"))
+            pull_request = event.get("pull_request")
+            if pull_request:
+                head_sha = pull_request.get("head", {}).get("sha")
+                if head_sha:
+                    return str(head_sha)
+        except (OSError, json.JSONDecodeError, TypeError):
+            pass
+    return os.environ.get("GITHUB_SHA", "repository history")
+
+
+def _prepare_client_spatial_figure(case_dir: Path) -> Path:
+    """Generate the client spatial sequence directly from the source FITS arrays."""
+    raw = case_dir / "data" / "raw"
+    affected = load_ima(raw / "icqtbbbxq_ima.fits")
+    control = load_ima(raw / "icqtbbc0q_ima.fits")
+    output = case_dir / "figures" / "client_spatial_sequence.png"
+    plot_client_spatial_sequence(affected, control, output)
+    return output
+
+
+def _linkify(pages: str) -> str:
+    """Add live website, email, repository, and reference annotations."""
+    contact = (
+        f'<a class="contact-link" href="{WEBSITE_URL}">brooks-photonics.com</a>'
+        " &nbsp; | &nbsp; "
+        f'<a class="contact-link" href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a>'
+    )
+    pages = pages.replace(
+        "brooks-photonics.com &nbsp; | &nbsp; terence@brooks-photonics.com",
+        contact,
+    )
+    pages = pages.replace(
+        "Raw FITS files remain outside Git; the repository stores exact URIs, "
+        "derived tables, figures, tests, and the complete execution workflow.",
+        "Raw FITS files remain outside Git; the repository stores exact URIs, "
+        "derived tables, figures, tests, and the complete execution workflow. "
+        f'<a href="{REPOSITORY_URL}">Open the repository and reproducibility package.</a>',
+    )
+    pages = pages.replace(
+        "The complete case can be regenerated from four pinned public products.",
+        "The complete case can be regenerated from four pinned public products. "
+        f'<a href="{REPOSITORY_URL}">Open the source repository.</a>',
+    )
+
+    references = {
+        "WFC3/IR IMA Visualization Tools with an Example of Time Variable Background": (
+            "https://spacetelescope.github.io/hst_notebooks/notebooks/WFC3/"
+            "ir_ima_visualization/"
+            "IR_IMA_Visualization_with_an_Example_of_Time_Variable_Background.html"
+        ),
+        "Correcting for Scattered Light in WFC3/IR Exposures: Manually Subtracting Bad Reads": (
+            "https://spacetelescope.github.io/hst_notebooks/notebooks/WFC3/"
+            "ir_scattered_light_manual_corrections/"
+            "Correcting_for_Scattered_Light_in_IR_Exposures_by_Manually_Subtracting_Bad_Reads.html"
+        ),
+        "WFC3 Data Handbook": "https://hst-docs.stsci.edu/wfc3dhb",
+        "WFC3 Instrument Handbook": "https://hst-docs.stsci.edu/wfc3ihb",
+    }
+    for title, url in references.items():
+        pages = pages.replace(
+            f"<i>{title}</i>",
+            f'<a href="{url}"><i>{title}</i></a>',
+        )
+    pages = pages.replace(
+        "Mikulski Archive for Space Telescopes",
+        '<a href="https://archive.stsci.edu/">Mikulski Archive for Space Telescopes</a>',
+    )
+    return pages
 
 
 def _build_report(case_dir: Path, output_path: Path, *, technical: bool) -> None:
@@ -24,13 +112,9 @@ def _build_report(case_dir: Path, output_path: Path, *, technical: bool) -> None
         figures / "representative_interval_maps.png",
         report_assets / "report_hero.png",
     )
-    client_spatial = _build_client_spatial_figure(
-        figures / "representative_interval_maps.png",
-        report_assets / "client_spatial_sequence.png",
-    )
     assets = {
         "hero": hero_path.resolve().as_uri(),
-        "client_spatial": client_spatial.resolve().as_uri(),
+        "client_spatial": (figures / "client_spatial_sequence.png").resolve().as_uri(),
         "temporal": (figures / "temporal_diagnosis.png").resolve().as_uri(),
         "robustness": (figures / "robustness_summary.png").resolve().as_uri(),
         "flt": (figures / "flt_reconstruction.png").resolve().as_uri(),
@@ -39,10 +123,13 @@ def _build_report(case_dir: Path, output_path: Path, *, technical: bool) -> None
     }
     pages = _client_pages(context, assets)
     if technical:
+        os.environ["GITHUB_SHA"] = _resolve_source_sha()
         pages += _technical_appendix(context, assets)
+    pages = _linkify(pages)
     html_document = (
         "<!doctype html><html><head><meta charset='utf-8'><style>"
         + REPORT_CSS
+        + LINK_CSS
         + "</style></head><body>"
         + pages
         + "</body></html>"
@@ -53,6 +140,7 @@ def _build_report(case_dir: Path, output_path: Path, *, technical: bool) -> None
 
 def build_case_001_report(case_dir: Path, output_path: Path) -> None:
     """Build the client report and its technical companion."""
+    _prepare_client_spatial_figure(case_dir)
     _build_report(case_dir, output_path, technical=False)
     technical_path = output_path.with_name(f"{output_path.stem}_Technical.pdf")
     _build_report(case_dir, technical_path, technical=True)
@@ -60,4 +148,5 @@ def build_case_001_report(case_dir: Path, output_path: Path) -> None:
 
 def build_case_001_technical_report(case_dir: Path, output_path: Path) -> None:
     """Build the nine-page technical version with method and provenance appendices."""
+    _prepare_client_spatial_figure(case_dir)
     _build_report(case_dir, output_path, technical=True)
