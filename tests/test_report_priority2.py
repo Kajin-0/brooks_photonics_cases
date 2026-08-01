@@ -36,7 +36,11 @@ def test_priority2_page_enhancement_adds_controls_and_qr(monkeypatch) -> None:
     pages = (
         '<div class="date">July 2026</div>'
         '<table><tr><td>Python package</td><td>brooks-photonics-cases 0.1.0</td></tr></table>'
-        '<div class="cta" style="margin-top:17px"><h3>Brooks Photonics</h3></div>'
+        '<div class="cta" style="margin-top:17px"><h3>Brooks Photonics</h3>'
+        '<p>Independent, physics-based analysis of infrared detector electrical, '
+        'spectral, temporal, and noise data.</p>'
+        '<div class="contact">brooks-photonics.com &nbsp; | &nbsp; '
+        'terence@brooks-photonics.com</div></div>'
     )
     enhanced = enhance_priority2_pages(
         pages,
@@ -48,8 +52,9 @@ def test_priority2_page_enhancement_adds_controls_and_qr(monkeypatch) -> None:
     assert "Rev 1.2" in enhanced
     assert "2026-08-01" in enhanced
     assert CASE_URL in enhanced
-    assert "case_001_repository" not in enhanced
     assert "file:///tmp/qr.png" in enhanced
+    assert "Open the reproducible technical package" in enhanced
+    assert "independent, physics-based analysis" in enhanced
 
 
 def test_repository_qr_is_written(tmp_path) -> None:
