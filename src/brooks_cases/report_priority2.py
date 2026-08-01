@@ -12,7 +12,7 @@ CASE_URL = (
     "https://github.com/Kajin-0/brooks_photonics_cases/"
     "tree/main/cases/001_wfc3_ir_ramp_anomaly"
 )
-REPORT_REVISION_DEFAULT = "1.2"
+REPORT_REVISION_DEFAULT = "1.3"
 
 PRIORITY2_CSS = r'''
 .document-control{text-align:right;color:#566173;font-size:7.5pt;line-height:1.25}
@@ -123,7 +123,7 @@ def enhance_priority2_pages(
         f'<a href="{CASE_URL}" style="text-decoration:none">'
         f'<img src="{assets["repository_qr"]}" alt="QR code for the Case 001 repository">'
         "</a>"
-        '<div><h3>Open the reproducible technical package</h3>'
+        '<div><h3>Source and reproducibility package</h3>'
         '<p>Scan or select the code for the source, pinned manifest, derived tables, '
         'figures, tests, and report workflow.</p>'
         '<p><b>Brooks Photonics:</b> independent, physics-based analysis of infrared '
