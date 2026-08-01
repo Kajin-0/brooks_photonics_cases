@@ -29,11 +29,14 @@ def _set_defaults() -> None:
             "font.size": 10,
             "axes.titlesize": 14,
             "axes.titleweight": "bold",
-            "axes.labelsize": 10,
+            "axes.labelsize": 10.5,
             "axes.edgecolor": "#AAB2BF",
             "axes.linewidth": 0.8,
             "xtick.color": MUTED,
             "ytick.color": MUTED,
+            "xtick.labelsize": 9.5,
+            "ytick.labelsize": 9.5,
+            "legend.fontsize": 9.2,
             "text.color": INK,
             "axes.labelcolor": INK,
             "figure.facecolor": "white",
@@ -155,7 +158,7 @@ def plot_robustness_summary(
 ) -> None:
     """Plot a decision heat map and spatial bootstrap uncertainty."""
     _set_defaults()
-    figure, axes = plt.subplots(1, 2, figsize=(11, 4.55), gridspec_kw={"wspace": 0.32})
+    figure, axes = plt.subplots(1, 2, figsize=(11.4, 4.9), gridspec_kw={"wspace": 0.36})
 
     axis = axes[0]
     pivot = sensitivity.pivot(
@@ -172,7 +175,7 @@ def plot_robustness_summary(
     norm = BoundaryNorm(np.arange(vmin - 0.5, vmax + 1.5), palette.N)
     image = axis.imshow(values, aspect="auto", cmap=palette, norm=norm, origin="lower")
     nominal_col = int(np.argmin(np.abs(thresholds - 0.05)))
-    axis.axvline(nominal_col, color=ORANGE, linewidth=1.8)
+    axis.axvline(nominal_col, color=ORANGE, linewidth=1.9)
     for row, _baseline in enumerate(baselines):
         axis.text(
             nominal_col,
@@ -180,7 +183,7 @@ def plot_robustness_summary(
             f"{int(values[row, nominal_col])}",
             ha="center",
             va="center",
-            fontsize=8.2,
+            fontsize=9.3,
             fontweight="bold",
             color="white" if values[row, nominal_col] >= (vmin + vmax) / 2 else INK,
         )
@@ -189,12 +192,13 @@ def plot_robustness_summary(
     axis.set_xticklabels([f"{thresholds[index]:.2f}" for index in tick_positions])
     axis.set_yticks(np.arange(len(baselines)))
     axis.set_yticklabels([str(value) for value in baselines])
-    axis.set_xlabel(f"Transient threshold ({RATE_UNIT})")
-    axis.set_ylabel("Late-baseline window (intervals)")
-    axis.set_title("Classification endpoint across decision settings", loc="left", fontsize=12.5)
-    colorbar = figure.colorbar(image, ax=axis, fraction=0.045, pad=0.035)
-    colorbar.set_label("Last flagged interval")
+    axis.set_xlabel(f"Transient threshold ({RATE_UNIT})", fontsize=10.2)
+    axis.set_ylabel("Late-baseline window (intervals)", fontsize=10.2)
+    axis.set_title("Classification endpoint across decision settings", loc="left", fontsize=13.2)
+    colorbar = figure.colorbar(image, ax=axis, fraction=0.047, pad=0.038)
+    colorbar.set_label("Last flagged interval", fontsize=9.5)
     colorbar.set_ticks(range(vmin, vmax + 1))
+    colorbar.ax.tick_params(labelsize=9.0)
     axis.text(
         nominal_col,
         len(baselines) - 0.58,
@@ -202,9 +206,10 @@ def plot_robustness_summary(
         ha="center",
         va="top",
         color=ORANGE,
-        fontsize=8.0,
+        fontsize=8.9,
         fontweight="bold",
     )
+    axis.tick_params(labelsize=9.3)
 
     axis = axes[1]
     x_values = comparison["mid_time_s"].to_numpy()
@@ -220,23 +225,24 @@ def plot_robustness_summary(
         x_values,
         bootstrap["point_transient_excess_e_s"],
         color=PURPLE_DARK,
-        linewidth=2.4,
+        linewidth=2.5,
         marker="o",
-        markersize=4,
+        markersize=4.5,
         label="Tile-median estimate",
     )
     axis.axhline(
         0.05,
         color=ORANGE,
-        linewidth=1.3,
+        linewidth=1.4,
         linestyle="--",
         label="Engineering threshold",
     )
     axis.axhline(0, color="#8992A3", linewidth=0.8)
-    axis.set_title("Spatial bootstrap uncertainty", loc="left", fontsize=12.5)
-    axis.set_xlabel("Interval midpoint (s)")
-    axis.set_ylabel(f"Transient excess ({RATE_UNIT})")
-    axis.legend(frameon=False, fontsize=8, loc="upper right")
+    axis.set_title("Spatial bootstrap uncertainty", loc="left", fontsize=13.2)
+    axis.set_xlabel("Interval midpoint (s)", fontsize=10.2)
+    axis.set_ylabel(f"Transient excess ({RATE_UNIT})", fontsize=10.2)
+    axis.legend(frameon=False, fontsize=9.2, loc="upper right")
+    axis.tick_params(labelsize=9.3)
     _clean(axis)
     _save(figure, output)
 
