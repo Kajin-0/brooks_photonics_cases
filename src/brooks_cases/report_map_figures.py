@@ -11,6 +11,7 @@ from brooks_cases.wfc3 import RampCube, instantaneous_rate, interval_good_mask
 
 RATE_UNIT = r"electrons s$^{-1}$ pixel$^{-1}$"
 MUTED = "#667085"
+FONT_FAMILY = ["IBM Plex Sans", "DejaVu Sans"]
 
 
 def _downsample_mean(array: np.ndarray, factor: int = 4) -> np.ndarray:
@@ -39,6 +40,7 @@ def plot_full_spatial_sequence(
     border: int = 50,
 ) -> None:
     """Plot the complete appendix sequence using affected/control terminology."""
+    plt.rcParams.update({"font.family": FONT_FAMILY})
     affected_rates, _ = instantaneous_rate(affected_cube)
     control_rates, _ = instantaneous_rate(control_cube)
     figure, axes = plt.subplots(len(intervals), 3, figsize=(13, 3.15 * len(intervals)))
@@ -81,7 +83,7 @@ def plot_full_spatial_sequence(
                 vmax=limits[1],
                 interpolation="nearest",
             )
-            axis.set_title(f"Interval {interval}: {title}", fontsize=10.5)
+            axis.set_title(f"Interval {interval}: {title}", fontsize=10.5, fontweight=600)
             axis.set_xticks([])
             axis.set_yticks([])
             colorbar = figure.colorbar(rendered, ax=axis, fraction=0.045, pad=0.03)
@@ -89,7 +91,7 @@ def plot_full_spatial_sequence(
     figure.suptitle(
         "Representative WFC3/IR instantaneous interval-rate maps",
         fontsize=15,
-        fontweight="bold",
+        fontweight=600,
     )
     figure.tight_layout(rect=(0, 0, 1, 0.98))
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -99,6 +101,7 @@ def plot_full_spatial_sequence(
 
 def plot_flt_reconstruction_maps(maps: dict[str, np.ndarray], output: Path) -> None:
     """Plot archived and independently reconstructed products with units."""
+    plt.rcParams.update({"font.family": FONT_FAMILY})
     archived = maps["archived_flt"]
     all_read = maps["all_read_fit"]
     clean_read = maps["clean_read_fit"]
@@ -130,7 +133,7 @@ def plot_flt_reconstruction_maps(maps: dict[str, np.ndarray], output: Path) -> N
             vmax=high,
             interpolation="nearest",
         )
-        axis.set_title(title, fontsize=10.5)
+        axis.set_title(title, fontsize=10.5, fontweight=600)
         axis.set_xticks([])
         axis.set_yticks([])
         colorbar = figure.colorbar(rendered, ax=axis, fraction=0.045, pad=0.03)
@@ -138,7 +141,7 @@ def plot_flt_reconstruction_maps(maps: dict[str, np.ndarray], output: Path) -> N
     figure.suptitle(
         "Archived and independently reconstructed count-rate products",
         fontsize=15,
-        fontweight="bold",
+        fontweight=600,
     )
     figure.tight_layout(rect=(0, 0, 1, 0.97))
     output.parent.mkdir(parents=True, exist_ok=True)
