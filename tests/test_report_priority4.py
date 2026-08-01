@@ -23,6 +23,9 @@ def test_editorial_layer_removes_template_numbering() -> None:
 
 def test_editorial_css_uses_institutional_typography_and_multicolor_accents() -> None:
     assert "IBM Plex Sans" in PRIORITY4_CSS
+    assert 'content: "BROOKS PHOTONICS  /  CASE STUDY 001"' in PRIORITY4_CSS
+    assert 'font: 600 7.3pt "Liberation Sans"' in PRIORITY4_CSS
+    assert "letter-spacing:.08em" in PRIORITY4_CSS
     assert ".cover-accent{" in PRIORITY4_CSS
     assert "linear-gradient" in PRIORITY4_CSS
     assert "#65408A" in PRIORITY4_CSS
