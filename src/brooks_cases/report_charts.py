@@ -4,10 +4,12 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import matplotlib.patheffects as path_effects
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib.colors import BoundaryNorm, ListedColormap
+from matplotlib.patches import Rectangle
 
 INK = "#172033"
 MUTED = "#667085"
@@ -55,7 +57,13 @@ def _clean(axis) -> None:  # type: ignore[no-untyped-def]
 
 def _save(figure, output: Path) -> None:  # type: ignore[no-untyped-def]
     output.parent.mkdir(parents=True, exist_ok=True)
-    figure.savefig(output, dpi=240, bbox_inches="tight", facecolor="white", pad_inches=0.08)
+    figure.savefig(
+        output,
+        dpi=240,
+        bbox_inches="tight",
+        facecolor="white",
+        pad_inches=0.08,
+    )
     plt.close(figure)
 
 
@@ -70,13 +78,24 @@ def plot_temporal_diagnosis(comparison: pd.DataFrame, output: Path) -> None:
         gridspec_kw={"height_ratios": [1.02, 0.98], "hspace": 0.12},
     )
     first_time = float(comparison["mid_time_s"].iloc[0])
-    last_flagged = int(comparison.loc[comparison["common_mode_flag"], "interval_index"].max())
+    last_flagged = int(
+        comparison.loc[comparison["common_mode_flag"], "interval_index"].max()
+    )
     last_time = float(
-        comparison.loc[comparison["interval_index"] == last_flagged, "mid_time_s"].iloc[0]
+        comparison.loc[
+            comparison["interval_index"] == last_flagged,
+            "mid_time_s",
+        ].iloc[0]
     )
 
     axis = axes[0]
-    axis.axvspan(first_time - 40, last_time + 40, color=PURPLE_LIGHT, alpha=0.62, linewidth=0)
+    axis.axvspan(
+        first_time - 40,
+        last_time + 40,
+        color=PURPLE_LIGHT,
+        alpha=0.62,
+        linewidth=0,
+    )
     axis.plot(
         comparison["mid_time_s"],
         comparison["test_full_median_e_s"],
@@ -97,14 +116,23 @@ def plot_temporal_diagnosis(comparison: pd.DataFrame, output: Path) -> None:
         label="Nominal control",
     )
     axis.text(
-        (first_time + last_time) / 2,
-        axis.get_ylim()[1] * 0.99,
+        0.34,
+        0.92,
         "Control-relative transient regime",
+        transform=axis.transAxes,
         color=PURPLE_DARK,
-        fontsize=9.5,
+        fontsize=9.4,
         fontweight="bold",
         horizontalalignment="center",
         verticalalignment="top",
+        bbox={
+            "boxstyle": "square,pad=0.32",
+            "facecolor": "white",
+            "edgecolor": "#B8C0CC",
+            "linewidth": 0.8,
+            "alpha": 0.97,
+        },
+        zorder=10,
     )
     axis.set_ylabel(f"Median interval rate\n({RATE_UNIT})")
     axis.legend(frameon=False, loc="upper right", ncol=2)
@@ -158,24 +186,57 @@ def plot_robustness_summary(
 ) -> None:
     """Plot a decision heat map and spatial bootstrap uncertainty."""
     _set_defaults()
-    figure, axes = plt.subplots(1, 2, figsize=(11.4, 4.9), gridspec_kw={"wspace": 0.36})
+    figure, axes = plt.subplots(
+        1,
+        2,
+        figsize=(11.4, 4.9),
+        gridspec_kw={"wspace": 0.36},
+    )
 
     axis = axes[0]
-    pivot = sensitivity.pivot(
-        index="late_intervals",
-        columns="threshold_e_s",
-        values="last_flagged_interval",
-    ).sort_index().sort_index(axis=1)
+    pivot = (
+        sensitivity.pivot(
+            index="late_intervals",
+            columns="threshold_e_s",
+            values="last_flagged_interval",
+        )
+        .sort_index()
+        .sort_index(axis=1)
+    )
     thresholds = pivot.columns.to_numpy(dtype=float)
     baselines = pivot.index.to_numpy(dtype=int)
     values = pivot.to_numpy(dtype=float)
     vmin = int(np.nanmin(values))
     vmax = int(np.nanmax(values))
-    palette = ListedColormap(plt.cm.Purples(np.linspace(0.28, 0.92, vmax - vmin + 1)))
+    palette = ListedColormap(
+        plt.cm.Purples(np.linspace(0.28, 0.92, vmax - vmin + 1))
+    )
     norm = BoundaryNorm(np.arange(vmin - 0.5, vmax + 1.5), palette.N)
-    image = axis.imshow(values, aspect="auto", cmap=palette, norm=norm, origin="lower")
+    image = axis.imshow(
+        values,
+        aspect="auto",
+        cmap=palette,
+        norm=norm,
+        origin="lower",
+    )
     nominal_col = int(np.argmin(np.abs(thresholds - 0.05)))
-    axis.axvline(nominal_col, color=ORANGE, linewidth=1.9)
+    nominal_outline = Rectangle(
+        (nominal_col - 0.5, -0.5),
+        1.0,
+        len(baselines),
+        fill=False,
+        edgecolor="white",
+        linewidth=2.5,
+        linestyle="--",
+        zorder=7,
+    )
+    nominal_outline.set_path_effects(
+        [
+            path_effects.Stroke(linewidth=4.6, foreground=INK),
+            path_effects.Normal(),
+        ]
+    )
+    axis.add_patch(nominal_outline)
     for row, _baseline in enumerate(baselines):
         axis.text(
             nominal_col,
@@ -186,28 +247,57 @@ def plot_robustness_summary(
             fontsize=9.3,
             fontweight="bold",
             color="white" if values[row, nominal_col] >= (vmin + vmax) / 2 else INK,
+            zorder=8,
         )
     tick_positions = np.arange(0, len(thresholds), 2)
     axis.set_xticks(tick_positions)
-    axis.set_xticklabels([f"{thresholds[index]:.2f}" for index in tick_positions])
+    axis.set_xticklabels(
+        [f"{thresholds[index]:.2f}" for index in tick_positions]
+    )
     axis.set_yticks(np.arange(len(baselines)))
     axis.set_yticklabels([str(value) for value in baselines])
     axis.set_xlabel(f"Transient threshold ({RATE_UNIT})", fontsize=10.2)
     axis.set_ylabel("Late-baseline window (intervals)", fontsize=10.2)
-    axis.set_title("Classification endpoint across decision settings", loc="left", fontsize=13.2)
-    colorbar = figure.colorbar(image, ax=axis, fraction=0.047, pad=0.038)
+    axis.set_title(
+        "Classification endpoint across decision settings",
+        loc="center",
+        fontsize=13.2,
+        pad=13,
+    )
+    colorbar = figure.colorbar(
+        image,
+        ax=axis,
+        fraction=0.047,
+        pad=0.038,
+    )
     colorbar.set_label("Last flagged interval", fontsize=9.5)
     colorbar.set_ticks(range(vmin, vmax + 1))
     colorbar.ax.tick_params(labelsize=9.0)
-    axis.text(
-        nominal_col,
-        len(baselines) - 0.58,
-        "0.05 nominal",
+    axis.annotate(
+        "Nominal threshold\n0.05",
+        xy=(nominal_col, len(baselines) - 0.58),
+        xycoords="data",
+        xytext=(0.72, 0.91),
+        textcoords="axes fraction",
         ha="center",
         va="top",
-        color=ORANGE,
+        color=INK,
         fontsize=8.9,
         fontweight="bold",
+        bbox={
+            "boxstyle": "square,pad=0.30",
+            "facecolor": "white",
+            "edgecolor": INK,
+            "linewidth": 0.8,
+        },
+        arrowprops={
+            "arrowstyle": "-|>",
+            "color": INK,
+            "linewidth": 0.9,
+            "shrinkA": 4,
+            "shrinkB": 4,
+        },
+        zorder=10,
     )
     axis.tick_params(labelsize=9.3)
 
@@ -238,7 +328,11 @@ def plot_robustness_summary(
         label="Engineering threshold",
     )
     axis.axhline(0, color="#8992A3", linewidth=0.8)
-    axis.set_title("Spatial bootstrap uncertainty", loc="left", fontsize=13.2)
+    axis.set_title(
+        "Spatial bootstrap uncertainty",
+        loc="left",
+        fontsize=13.2,
+    )
     axis.set_xlabel("Interval midpoint (s)", fontsize=10.2)
     axis.set_ylabel(f"Transient excess ({RATE_UNIT})", fontsize=10.2)
     axis.legend(frameon=False, fontsize=9.2, loc="upper right")
@@ -254,7 +348,12 @@ def plot_spatial_and_dq(
 ) -> None:
     """Plot the evolution of spatial asymmetry and the pipeline rejection response."""
     _set_defaults()
-    figure, axes = plt.subplots(1, 2, figsize=(11, 4.45), gridspec_kw={"wspace": 0.28})
+    figure, axes = plt.subplots(
+        1,
+        2,
+        figsize=(11, 4.45),
+        gridspec_kw={"wspace": 0.28},
+    )
     axis = axes[0]
     axis.plot(
         affected["mid_time_s"],
