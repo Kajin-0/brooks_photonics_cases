@@ -17,8 +17,8 @@ REPORT_REVISION_DEFAULT = "1.2"
 PRIORITY2_CSS = r'''
 .document-control{text-align:right;color:#566173;font-size:7.5pt;line-height:1.25}
 .document-control .doc-id{font-size:9.2pt;font-weight:750;color:#172033;letter-spacing:.035em}
-.qr-panel{display:grid;grid-template-columns:0.88in 1fr;gap:12px;align-items:center;border:1px solid #DDE2EA;border-radius:4px;padding:9px 11px;margin-top:12px;background:#FAFBFC}
-.qr-panel img{width:.82in;height:.82in;image-rendering:crisp-edges}.qr-panel h3{margin-bottom:3px}.qr-panel p{font-size:7.8pt;color:#566173;margin-bottom:0;line-height:1.32}
+.qr-panel{display:grid;grid-template-columns:0.82in 1fr;gap:11px;align-items:center;border:1px solid #DDE2EA;border-radius:4px;padding:8px 10px;margin-top:10px;background:#FAFBFC}
+.qr-panel img{width:.76in;height:.76in;image-rendering:crisp-edges}.qr-panel h3{margin-bottom:2px}.qr-panel p{font-size:7.35pt;color:#566173;margin-bottom:2px;line-height:1.27}.qr-panel .contact{font-size:7.35pt;font-weight:700;color:#172033;margin-top:4px;white-space:nowrap}
 .doc-control-table td:first-child{width:39%}
 '''
 
@@ -111,15 +111,25 @@ def enhance_priority2_pages(
     )
     pages = pages.replace(execution_marker, execution_rows, 1)
 
-    qr_panel = (
-        '<a href="' + CASE_URL + '" style="text-decoration:none">'
-        '<div class="qr-panel">'
-        f'<img src="{assets["repository_qr"]}" alt="QR code for the Case 001 repository">'
-        '<div><h3>Open the reproducible technical package</h3>'
-        '<p>Scan or select this code to access the source, pinned product manifest, '
-        'derived tables, figures, tests, and report-generation workflow.</p></div>'
-        "</div></a>"
+    original_cta = (
+        '<div class="cta" style="margin-top:17px"><h3>Brooks Photonics</h3>'
+        '<p>Independent, physics-based analysis of infrared detector electrical, '
+        'spectral, temporal, and noise data.</p>'
+        '<div class="contact">brooks-photonics.com &nbsp; | &nbsp; '
+        'terence@brooks-photonics.com</div></div>'
     )
-    cta_marker = '<div class="cta" style="margin-top:17px"><h3>Brooks Photonics</h3>'
-    pages = pages.replace(cta_marker, qr_panel + cta_marker, 1)
+    combined_panel = (
+        '<div class="qr-panel">'
+        f'<a href="{CASE_URL}" style="text-decoration:none">'
+        f'<img src="{assets["repository_qr"]}" alt="QR code for the Case 001 repository">'
+        "</a>"
+        '<div><h3>Open the reproducible technical package</h3>'
+        '<p>Scan or select the code for the source, pinned manifest, derived tables, '
+        'figures, tests, and report workflow.</p>'
+        '<p><b>Brooks Photonics:</b> independent, physics-based analysis of infrared '
+        'detector electrical, spectral, temporal, and noise data.</p>'
+        '<div class="contact">brooks-photonics.com &nbsp; | &nbsp; '
+        'terence@brooks-photonics.com</div></div></div>'
+    )
+    pages = pages.replace(original_cta, combined_panel, 1)
     return pages
