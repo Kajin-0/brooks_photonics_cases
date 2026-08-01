@@ -22,15 +22,16 @@ ORANGE_LIGHT = "#F7E4DB"
 TEAL = "#157A7A"
 BLUE = "#2D5F9A"
 RATE_UNIT = r"electrons s$^{-1}$ pixel$^{-1}$"
+FONT_FAMILY = ["IBM Plex Sans", "DejaVu Sans"]
 
 
 def _set_defaults() -> None:
     plt.rcParams.update(
         {
-            "font.family": "DejaVu Sans",
+            "font.family": FONT_FAMILY,
             "font.size": 10,
             "axes.titlesize": 14,
-            "axes.titleweight": "bold",
+            "axes.titleweight": 600,
             "axes.labelsize": 10.5,
             "axes.edgecolor": "#AAB2BF",
             "axes.linewidth": 0.8,
@@ -122,7 +123,7 @@ def plot_temporal_diagnosis(comparison: pd.DataFrame, output: Path) -> None:
         transform=axis.transAxes,
         color=PURPLE_DARK,
         fontsize=9.4,
-        fontweight="bold",
+        fontweight=600,
         horizontalalignment="center",
         verticalalignment="top",
         bbox={
@@ -169,7 +170,7 @@ def plot_temporal_diagnosis(comparison: pd.DataFrame, output: Path) -> None:
         verticalalignment="bottom",
         color=ORANGE,
         fontsize=9,
-        fontweight="bold",
+        fontweight=600,
     )
     axis.axhline(0, color="#8992A3", linewidth=0.8)
     axis.set_ylabel(f"Control-relative excess\n({RATE_UNIT})")
@@ -245,7 +246,7 @@ def plot_robustness_summary(
             ha="center",
             va="center",
             fontsize=9.3,
-            fontweight="bold",
+            fontweight=600,
             color="white" if values[row, nominal_col] >= (vmin + vmax) / 2 else INK,
             zorder=8,
         )
@@ -283,7 +284,7 @@ def plot_robustness_summary(
         va="top",
         color=INK,
         fontsize=8.9,
-        fontweight="bold",
+        fontweight=600,
         bbox={
             "boxstyle": "square,pad=0.30",
             "facecolor": "white",
